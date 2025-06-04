@@ -38,9 +38,24 @@ elif mode == "Admin Panel 🔐":
 
         model_names = sorted([m["Display Name"] for m in service_models])
         selected_display = st.selectbox("Select Vehicle to Edit", model_names)
-        selected_model = next((m for m in service_models if m["Display Name"] == selected_display), None)
+        selected_index = next((i for i, m in enumerate(service_models) if m["Display Name"] == selected_display), None)
 
-        if selected_model:
+        if selected_index is not None:
+            selected_model = service_models[selected_index]
+
+            st.markdown("### Edit Vehicle Info")
+            new_model_code = st.text_input("Model (Internal Code)", value=selected_model["Model"])
+            new_display_name = st.text_input("Display Name", value=selected_model["Display Name"])
+
+            if st.button("💾 Save Vehicle Info"):
+                selected_model["Model"] = new_model_code
+                selected_model["Display Name"] = new_display_name
+                service_models[selected_index] = selected_model
+                with open(DATA_FILE, "w") as f:
+                    json.dump(service_models, f, indent=4)
+                st.success("Vehicle info updated.")
+
+            st.markdown("---")
             st.markdown("### Edit Service Intervals")
             for i, svc in enumerate(selected_model["Services"]):
                 with st.expander(f"Edit: {svc['Interval']}"):
@@ -48,7 +63,6 @@ elif mode == "Admin Panel 🔐":
                     new_desc = st.text_area(f"What's Included {i+1}", value=svc["What’s Included"], key=f"desc_{i}")
                     new_price = st.number_input(f"Price {i+1}", value=svc["Price"], key=f"price_{i}")
 
-                    # Save changes into the model
                     svc["Interval"] = new_interval
                     svc["What’s Included"] = new_desc
                     svc["Price"] = new_price
@@ -65,6 +79,7 @@ elif mode == "Admin Panel 🔐":
                         "What’s Included": new_desc,
                         "Price": new_price
                     })
+                    service_models[selected_index] = selected_model
                     with open(DATA_FILE, "w") as f:
                         json.dump(service_models, f, indent=4)
                     st.success("New interval added successfully!")
