@@ -101,7 +101,7 @@ elif mode == "Admin Panel 🔐":
 
             st.markdown("### Edit Vehicle Info")
     new_display_name = st.text_input("Display Name", value=selected_model["Display Name"])
-        if st.button("💾 Save Vehicle Info"):
+    if st.button("💾 Save Vehicle Info"):
                 selected_model["Model"] = new_model_code
                 selected_model["Display Name"] = new_display_name
                 service_models[selected_index] = selected_model
