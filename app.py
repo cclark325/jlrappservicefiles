@@ -58,17 +58,12 @@ if mode == "View Service Menu":
         if svc:
             from print_utils import generate_service_html, download_link
 
-            # Build parts list
-            parts = []
-            for part_num in svc.get("Parts Used", []):
-                part = get_part_info(part_num)
-                if part:
-                    parts.append(part)
+            parts = [get_part_info(p) for p in svc.get("Parts Used", []) if get_part_info(p)]
 
             html_out = generate_service_html(
                 model_name=selected_model["Display Name"],
                 interval=svc["Interval"],
-                description=svc["What’s Included"],
+                description=svc["What's Included"],
                 parts=parts,
                 labor_hours=svc.get("Labor Hours", 0.0),
                 total_price=calculate_total_price(svc)
@@ -76,13 +71,11 @@ if mode == "View Service Menu":
             st.markdown(download_link(html_out, "Service_Interval_Printout.html"), unsafe_allow_html=True)
 
             st.markdown(f"### {svc['Interval']}")
-            st.write(svc["What’s Included"])
+            st.write(svc["What's Included"])
 
             st.markdown("#### Parts Used:")
-            for part_num in svc.get("Parts Used", []):
-                part = get_part_info(part_num)
-                if part:
-                    st.write(f"- **{part['Part Name']}** ({part['Part Number']}): ${part['Unit Price']:.2f}")
+            for part in parts:
+                st.write(f"- **{part['Part Name']}** ({part['Part Number']}): ${part['Unit Price']:.2f}")
 
             st.write(f"**Labor:** {svc.get('Labor Hours', 0.0):.2f} hrs")
             st.markdown(f"### 💰 Total Price: **${calculate_total_price(svc):.2f}**")
@@ -100,22 +93,22 @@ elif mode == "Admin Panel 🔐":
             selected_model = service_models[selected_index]
 
             st.markdown("### Edit Vehicle Info")
-    new_display_name = st.text_input("Display Name", value=selected_model["Display Name"])
-    if st.button("💾 Save Vehicle Info"):
+            new_display_name = st.text_input("Display Name", value=selected_model["Display Name"])
+            new_model_code = st.text_input("Model Code", value=selected_model.get("Model", ""))
+            if st.button("💾 Save Vehicle Info"):
                 selected_model["Model"] = new_model_code
                 selected_model["Display Name"] = new_display_name
                 service_models[selected_index] = selected_model
                 save_json(SERVICE_FILE, service_models)
                 st.success("Vehicle info updated.")
 
-    st.markdown("---")
-    st.markdown("### Edit Service Intervals")
-    for i, svc in enumerate(selected_model["Services"]):
+            st.markdown("---")
+            st.markdown("### Edit Service Intervals")
+            for i, svc in enumerate(selected_model["Services"]):
                 with st.expander(f"Edit: {svc['Interval']}"):
                     svc["Interval"] = st.text_input(f"Interval {i+1}", value=svc["Interval"], key=f"int_{i}")
-                    svc["What’s Included"] = st.text_area(f"What's Included {i+1}", value=svc["What’s Included"], key=f"desc_{i}")
+                    svc["What's Included"] = st.text_area(f"What's Included {i+1}", value=svc["What's Included"], key=f"desc_{i}")
                     svc["Labor Hours"] = st.number_input(f"Labor Hours {i+1}", value=svc.get("Labor Hours", 0.0), step=0.1, key=f"lh_{i}")
-
                     current_parts = svc.get("Parts Used", [])
                     st.write("Parts Used:")
                     new_parts = st.multiselect(
@@ -126,7 +119,7 @@ elif mode == "Admin Panel 🔐":
                     )
                     svc["Parts Used"] = new_parts
 
-    st.markdown("### Add New Interval")
+            st.markdown("### Add New Interval")
             with st.form("add_interval_form"):
                 new_int = st.text_input("New Interval")
                 new_desc = st.text_area("New What's Included")
@@ -136,7 +129,7 @@ elif mode == "Admin Panel 🔐":
                 if add_submitted:
                     selected_model["Services"].append({
                         "Interval": new_int,
-                        "What’s Included": new_desc,
+                        "What's Included": new_desc,
                         "Labor Hours": new_labor_hours,
                         "Parts Used": new_parts
                     })
@@ -155,15 +148,14 @@ elif mode == "Parts Manager 🧰":
     pin = st.text_input("Enter Parts Admin PIN", type="password", key="parts_pin")
     if pin == parts_pin:
         st.success("Access granted.")
-
- st.markdown("### Existing Parts")
+        st.markdown("### Existing Parts")
         for i, part in enumerate(parts_catalog):
             with st.expander(f"{part['Part Name']} ({part['Part Number']})"):
                 part["Part Name"] = st.text_input(f"Part Name {i}", value=part["Part Name"], key=f"name_{i}")
                 part["Part Number"] = st.text_input(f"Part Number {i}", value=part["Part Number"], key=f"num_{i}")
                 part["Unit Price"] = st.number_input(f"Unit Price {i}", value=part["Unit Price"], key=f"price_{i}")
 
- st.markdown("### Add New Part")
+        st.markdown("### Add New Part")
         with st.form("add_part_form"):
             pname = st.text_input("Part Name")
             pnum = st.text_input("Part Number")
@@ -206,7 +198,6 @@ elif mode == "PIN Settings 🔑":
     pin = st.text_input("Enter Current Service Admin PIN", type="password", key="pin_pin")
     if pin == service_pin:
         st.success("Access granted.")
-
         new_service_pin = st.text_input("New Service Admin PIN", type="password")
         new_parts_pin = st.text_input("New Parts Admin PIN", type="password")
         if st.button("Update Admin PINs"):
