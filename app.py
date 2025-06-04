@@ -24,7 +24,11 @@ if mode == "View Service Menu":
 
     selected_model = next((m for m in service_models if m["Display Name"] == selected_display), None)
     if selected_model:
-        for svc in selected_model["Services"]:
+        intervals = [svc["Interval"] for svc in selected_model["Services"]]
+        selected_interval = st.selectbox("Select Service Interval", intervals)
+
+        svc = next((s for s in selected_model["Services"] if s["Interval"] == selected_interval), None)
+        if svc:
             st.markdown(f"### {svc['Interval']}")
             st.write(svc["What’s Included"])
             st.markdown(f"**Price: ${svc['Price']:.2f}**")
