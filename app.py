@@ -63,10 +63,10 @@ elif mode == "Admin Panel 🔐":
                     st.success("Service added successfully!")
 
         st.markdown("---")
-        st.markdown("### Edit Existing Service Entry")
-        display_map = {item["Display Name"]: (item["Model"], item["Interval"]) for item in services}
+        st.markdown("### Edit or Delete Existing Service Entry")
+        display_map = {item["Display Name"] + " – " + item["Interval"]: (item["Model"], item["Interval"]) for item in services}
         display_names = sorted(display_map.keys())
-        selected_display = st.selectbox("Select Display Name", display_names, key="edit_display")
+        selected_display = st.selectbox("Select Entry to Edit/Delete", display_names, key="edit_display")
         selected_model, selected_interval = display_map[selected_display]
 
         record = next((item for item in services if item["Model"] == selected_model and item["Interval"] == selected_interval), None)
@@ -95,6 +95,13 @@ elif mode == "Admin Panel 🔐":
                         with open(DATA_FILE, "w") as f:
                             json.dump(services, f, indent=4)
                         st.success("Service updated successfully!")
+
+            # Delete button outside form
+            if st.button("❌ Delete This Entry"):
+                services = [item for item in services if not (item["Model"] == selected_model and item["Interval"] == selected_interval)]
+                with open(DATA_FILE, "w") as f:
+                    json.dump(services, f, indent=4)
+                st.success("Entry deleted. Refresh the page to see the changes.")
 
     else:
         st.warning("Enter the correct PIN to access admin features.")
