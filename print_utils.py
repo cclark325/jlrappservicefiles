@@ -19,6 +19,11 @@ def generate_service_html(model_name, interval, description, parts, labor_hours,
             table {{ border-collapse: collapse; width: 100%; margin-top: 10px; }}
             th, td {{ border: 1px solid #ccc; padding: 8px; text-align: left; }}
         </style>
+        <script>
+            window.onload = function() {{
+                window.print();
+            }};
+        </script>
     </head>
     <body>
         <h1>{model_name} - {interval}</h1>
