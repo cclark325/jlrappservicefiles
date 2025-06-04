@@ -63,7 +63,7 @@ if mode == "View Service Menu":
             html_out = generate_service_html(
                 model_name=selected_model["Display Name"],
                 interval=svc["Interval"],
-                description=svc["What's Included"],
+                description=svc.get("What's Included", ""),
                 parts=parts,
                 labor_hours=svc.get("Labor Hours", 0.0),
                 total_price=calculate_total_price(svc)
@@ -71,7 +71,7 @@ if mode == "View Service Menu":
             st.markdown(download_link(html_out, "Service_Interval_Printout.html"), unsafe_allow_html=True)
 
             st.markdown(f"### {svc['Interval']}")
-            st.write(svc["What's Included"])
+            st.write(svc.get("What's Included", ""))
 
             st.markdown("#### Parts Used:")
             for part in parts:
@@ -79,131 +79,3 @@ if mode == "View Service Menu":
 
             st.write(f"**Labor:** {svc.get('Labor Hours', 0.0):.2f} hrs")
             st.markdown(f"### 💰 Total Price: **${calculate_total_price(svc):.2f}**")
-
-elif mode == "Admin Panel 🔐":
-    st.subheader("Service Admin Panel")
-    pin = st.text_input("Enter Service Admin PIN", type="password")
-    if pin == service_pin:
-        st.success("Access granted.")
-        model_names = sorted([m["Display Name"] for m in service_models])
-        selected_display = st.selectbox("Select Vehicle to Edit", model_names)
-        selected_index = next((i for i, m in enumerate(service_models) if m["Display Name"] == selected_display), None)
-
-        if selected_index is not None:
-            selected_model = service_models[selected_index]
-
-            st.markdown("### Edit Vehicle Info")
-            new_display_name = st.text_input("Display Name", value=selected_model["Display Name"])
-            new_model_code = st.text_input("Model Code", value=selected_model.get("Model", ""))
-            if st.button("💾 Save Vehicle Info"):
-                selected_model["Model"] = new_model_code
-                selected_model["Display Name"] = new_display_name
-                service_models[selected_index] = selected_model
-                save_json(SERVICE_FILE, service_models)
-                st.success("Vehicle info updated.")
-
-            st.markdown("---")
-            st.markdown("### Edit Service Intervals")
-            for i, svc in enumerate(selected_model["Services"]):
-                with st.expander(f"Edit: {svc['Interval']}"):
-                    svc["Interval"] = st.text_input(f"Interval {i+1}", value=svc["Interval"], key=f"int_{i}")
-                    svc["What's Included"] = st.text_area(f"What's Included {i+1}", value=svc["What's Included"], key=f"desc_{i}")
-                    svc["Labor Hours"] = st.number_input(f"Labor Hours {i+1}", value=svc.get("Labor Hours", 0.0), step=0.1, key=f"lh_{i}")
-                    current_parts = svc.get("Parts Used", [])
-                    st.write("Parts Used:")
-                    new_parts = st.multiselect(
-                        f"Select Parts {i+1}",
-                        options=[p["Part Number"] for p in parts_catalog],
-                        default=current_parts,
-                        key=f"parts_{i}"
-                    )
-                    svc["Parts Used"] = new_parts
-
-            st.markdown("### Add New Interval")
-            with st.form("add_interval_form"):
-                new_int = st.text_input("New Interval")
-                new_desc = st.text_area("New What's Included")
-                new_labor_hours = st.number_input("New Labor Hours", min_value=0.0, step=0.1)
-                new_parts = st.multiselect("New Parts Used", options=[p["Part Number"] for p in parts_catalog])
-                add_submitted = st.form_submit_button("Add Interval")
-                if add_submitted:
-                    selected_model["Services"].append({
-                        "Interval": new_int,
-                        "What's Included": new_desc,
-                        "Labor Hours": new_labor_hours,
-                        "Parts Used": new_parts
-                    })
-                    service_models[selected_index] = selected_model
-                    save_json(SERVICE_FILE, service_models)
-                    st.success("New interval added successfully!")
-
-            if st.button("💾 Save All Changes"):
-                save_json(SERVICE_FILE, service_models)
-                st.success("All changes saved.")
-    else:
-        st.warning("Enter correct Service Admin PIN.")
-
-elif mode == "Parts Manager 🧰":
-    st.subheader("Parts Catalog Editor")
-    pin = st.text_input("Enter Parts Admin PIN", type="password", key="parts_pin")
-    if pin == parts_pin:
-        st.success("Access granted.")
-        st.markdown("### Existing Parts")
-        for i, part in enumerate(parts_catalog):
-            with st.expander(f"{part['Part Name']} ({part['Part Number']})"):
-                part["Part Name"] = st.text_input(f"Part Name {i}", value=part["Part Name"], key=f"name_{i}")
-                part["Part Number"] = st.text_input(f"Part Number {i}", value=part["Part Number"], key=f"num_{i}")
-                part["Unit Price"] = st.number_input(f"Unit Price {i}", value=part["Unit Price"], key=f"price_{i}")
-
-        st.markdown("### Add New Part")
-        with st.form("add_part_form"):
-            pname = st.text_input("Part Name")
-            pnum = st.text_input("Part Number")
-            pprice = st.number_input("Unit Price", min_value=0.0, format="%.2f")
-            add_part = st.form_submit_button("Add Part")
-            if add_part:
-                parts_catalog.append({
-                    "Part Name": pname,
-                    "Part Number": pnum,
-                    "Unit Price": pprice
-                })
-                save_json(PARTS_FILE, parts_catalog)
-                st.success("New part added.")
-
-        if st.button("💾 Save All Parts"):
-            save_json(PARTS_FILE, parts_catalog)
-            st.success("All part changes saved.")
-    else:
-        st.warning("Enter correct Parts Admin PIN.")
-
-elif mode == "Labor Rate Settings ⚙️":
-    st.subheader("Set Global Labor Rate")
-    pin = st.text_input("Enter Service Admin PIN", type="password", key="rate_pin")
-    if pin == service_pin:
-        st.success("Access granted.")
-        with st.form("update_labor_rate_form"):
-            new_rate = st.number_input("Set Labor Rate ($/hr)", min_value=0.0, value=labor_rate, step=1.0)
-            update = st.form_submit_button("💾 Update Labor Rate")
-            if update:
-                config["Labor Rate"] = new_rate
-                save_json(CONFIG_FILE, config)
-                st.success("Labor rate updated. Please refresh the app to apply.")
-    elif pin:
-        st.error("Incorrect PIN. Try again.")
-    else:
-        st.info("Enter Service Admin PIN to make changes.")
-
-elif mode == "PIN Settings 🔑":
-    st.subheader("Update Admin PINs")
-    pin = st.text_input("Enter Current Service Admin PIN", type="password", key="pin_pin")
-    if pin == service_pin:
-        st.success("Access granted.")
-        new_service_pin = st.text_input("New Service Admin PIN", type="password")
-        new_parts_pin = st.text_input("New Parts Admin PIN", type="password")
-        if st.button("Update Admin PINs"):
-            config["Service Admin PIN"] = new_service_pin
-            config["Parts Admin PIN"] = new_parts_pin
-            save_json(CONFIG_FILE, config)
-            st.success("Admin PINs updated. Please refresh app.")
-    else:
-        st.warning("Enter correct current Service Admin PIN.")
