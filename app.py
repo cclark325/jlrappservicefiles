@@ -171,13 +171,17 @@ elif mode == "Labor Rate Settings ⚙️":
     pin = st.text_input("Enter Service Admin PIN", type="password", key="rate_pin")
     if pin == service_pin:
         st.success("Access granted.")
-        new_rate = st.number_input("Set Labor Rate ($/hr)", min_value=0.0, value=labor_rate, step=1.0)
-        if st.button("💾 Update Labor Rate"):
-            config["Labor Rate"] = new_rate
-            save_json(CONFIG_FILE, config)
-            st.success("Labor rate updated. Please refresh the app to apply.")
+        with st.form("update_labor_rate_form"):
+            new_rate = st.number_input("Set Labor Rate ($/hr)", min_value=0.0, value=labor_rate, step=1.0)
+            update = st.form_submit_button("💾 Update Labor Rate")
+            if update:
+                config["Labor Rate"] = new_rate
+                save_json(CONFIG_FILE, config)
+                st.success("Labor rate updated. Please refresh the app to apply.")
+    elif pin:
+        st.error("Incorrect PIN. Try again.")
     else:
-        st.warning("Enter Service Admin PIN.")
+        st.info("Enter Service Admin PIN to make changes.")
 
 elif mode == "PIN Settings 🔑":
     st.subheader("Update Admin PINs")
