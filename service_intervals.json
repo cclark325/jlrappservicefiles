@@ -1,0 +1,74 @@
+[
+    {
+        "Model": "13-22 RR SC V8",
+        "Interval": "1 yr/16,000 miles",
+        "What\u2019s Included": "Synthetic oil change, tire rotate, cabin air filter, front and rear wiper blades, remote battery",
+        "Price": 429.95
+    },
+    {
+        "Model": "13-22 RR SC V8",
+        "Interval": "2 yr/32,000 miles",
+        "What\u2019s Included": "Synthetic oil change, tire rotate, cabin air filter, front and rear wiper blades, remote battery, engine air filter, brake fluid service",
+        "Price": 579.95
+    },
+    {
+        "Model": "13-22 RR SC V8",
+        "Interval": "3 yr/48000 miles",
+        "What\u2019s Included": "Synthetic oil change, tire rotate, cabin air filter, front and rear wiper blades, remote battery",
+        "Price": 729.95
+    },
+    {
+        "Model": "13-22 RR SC V8",
+        "Interval": "4 yr/64,000 miles",
+        "What\u2019s Included": "Synthetic oil change, tire rotate, cabin air filter, front and rear wiper blades, remote battery, engine air filter, brake fluid service",
+        "Price": 879.95
+    },
+    {
+        "Model": "13-16 RR NA V8",
+        "Interval": "1 yr/16,000 miles",
+        "What\u2019s Included": "Synthetic oil change, tire rotate, cabin air filter, front and rear wiper blades, remote battery",
+        "Price": 429.95
+    },
+    {
+        "Model": "13-16 RR NA V8",
+        "Interval": "2 yr/32,000 miles",
+        "What\u2019s Included": "Synthetic oil change, tire rotate, cabin air filter, front and rear wiper blades, remote battery, engine air filter, brake fluid service",
+        "Price": 579.95
+    },
+    {
+        "Model": "13-16 RR NA V8",
+        "Interval": "3 yr/48000 miles",
+        "What\u2019s Included": "Synthetic oil change, tire rotate, cabin air filter, front and rear wiper blades, remote battery",
+        "Price": 729.95
+    },
+    {
+        "Model": "13-16 RR NA V8",
+        "Interval": "4 yr/64,000 miles",
+        "What\u2019s Included": "Synthetic oil change, tire rotate, cabin air filter, front and rear wiper blades, remote battery, engine air filter, brake fluid service",
+        "Price": 879.95
+    },
+    {
+        "Model": "14-19 RR SC V6",
+        "Interval": "1 yr/16,000 miles",
+        "What\u2019s Included": "Synthetic oil change, tire rotate, cabin air filter, front and rear wiper blades, remote battery",
+        "Price": 429.95
+    },
+    {
+        "Model": "14-19 RR SC V6",
+        "Interval": "2 yr/32,000 miles",
+        "What\u2019s Included": "Synthetic oil change, tire rotate, cabin air filter, front and rear wiper blades, remote battery, engine air filter, brake fluid service",
+        "Price": 579.95
+    },
+    {
+        "Model": "14-19 RR SC V6",
+        "Interval": "3 yr/48000 miles",
+        "What\u2019s Included": "Synthetic oil change, tire rotate, cabin air filter, front and rear wiper blades, remote battery",
+        "Price": 729.95
+    },
+    {
+        "Model": "14-19 RR SC V6",
+        "Interval": "4 yr/64,000 miles",
+        "What\u2019s Included": "Synthetic oil change, tire rotate, cabin air filter, front and rear wiper blades, remote battery, engine air filter, brake fluid service",
+        "Price": 879.95
+    }
+]
