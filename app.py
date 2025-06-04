@@ -108,7 +108,7 @@ elif mode == "Admin Panel 🔐":
                 save_json(SERVICE_FILE, service_models)
                 st.success("Vehicle info updated.")
 
-            st.markdown("---")
+    st.markdown("---")
             st.markdown("### Edit Service Intervals")
             for i, svc in enumerate(selected_model["Services"]):
                 with st.expander(f"Edit: {svc['Interval']}"):
