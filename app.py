@@ -106,7 +106,7 @@ if mode == "View Service Menu":
             with open(html_file, "w") as f:
                 f.write(html)
             with open(html_file, "rb") as f:
-                st.download_button("📄 Download Service Sheet (HTML)", f, file_name=html_file.name)
+                st.download_button("📄 Download Service Sheet (HTML)", f, file_name="service_sheet.html")
             st.markdown("---")
             st.components.v1.html(html, height=600, scrolling=True)
 
@@ -138,12 +138,16 @@ elif mode == "Admin Panel 🔐":
                     svc["What's Included"] = st.text_area(f"What's Included {i+1}", value=svc.get("What's Included", ""), key=f"desc_{i}")
                     svc["Labor Hours"] = st.number_input(f"Labor Hours {i+1}", value=svc.get("Labor Hours", 0.0), step=0.1, key=f"lh_{i}")
                     current_parts = svc.get("Parts Used", [])
-                    new_parts = st.multiselect(
-                        f"Select Parts {i+1}",
-                        options=[p["Part Number"] for p in parts_catalog],
-                        default=current_parts,
-                        key=f"parts_{i}"
-                    )
+                    
+part_options = [p["Part Number"] for p in parts_catalog]
+valid_defaults = [p for p in current_parts if p in part_options]
+new_parts = st.multiselect(
+    f"Select Parts {i+1}",
+    options=part_options,
+    default=valid_defaults,
+    key=f"parts_{i}"
+)
+
                     svc["Parts Used"] = new_parts
 
             st.markdown("### Add New Interval")
