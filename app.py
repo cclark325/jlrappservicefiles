@@ -3,35 +3,32 @@ import streamlit as st
 import json
 import os
 
-DATA_FILE = "service_intervals.json"
+DATA_FILE = "service_models.json"
 ADMIN_PIN = "4397"
 
-# Load existing services
+# Load grouped model data
 if os.path.exists(DATA_FILE):
     with open(DATA_FILE, "r") as f:
-        services = json.load(f)
+        service_models = json.load(f)
 else:
-    services = []
+    service_models = []
 
 st.set_page_config(page_title="Service Menu", layout="wide")
 st.title("Land Rover / Jaguar Service Menu")
 
-# Sidebar navigation
 mode = st.sidebar.radio("Choose mode", ["View Service Menu", "Admin Panel 🔐"])
 
 if mode == "View Service Menu":
-    display_map = {item["Display Name"]: item["Model"] for item in services}
-    display_names = sorted(set(display_map.keys()))
+    display_names = sorted([model["Display Name"] for model in service_models])
     selected_display = st.selectbox("Select Vehicle", display_names)
 
-    selected_model = display_map[selected_display]
-    filtered = [item for item in services if item["Model"] == selected_model]
-
-    for item in filtered:
-        st.markdown(f"### {item['Interval']}")
-        st.write(item["What’s Included"])
-        st.markdown(f"**Price: ${item['Price']:.2f}**")
-        st.markdown("---")
+    selected_model = next((m for m in service_models if m["Display Name"] == selected_display), None)
+    if selected_model:
+        for svc in selected_model["Services"]:
+            st.markdown(f"### {svc['Interval']}")
+            st.write(svc["What’s Included"])
+            st.markdown(f"**Price: ${svc['Price']:.2f}**")
+            st.markdown("---")
 
 elif mode == "Admin Panel 🔐":
     st.subheader("Admin Access Required")
@@ -39,69 +36,43 @@ elif mode == "Admin Panel 🔐":
     if pin == ADMIN_PIN:
         st.success("Access granted.")
 
-        st.markdown("### Add New Service Entry")
-        with st.form("add_service_form"):
-            new_model = st.text_input("Model (internal code)")
-            new_display = st.text_input("Display Name (shown to advisors/customers)")
-            new_interval = st.text_input("Interval")
-            new_description = st.text_area("What's Included")
-            new_price = st.number_input("Price", min_value=0.0, format="%.2f")
-            submitted = st.form_submit_button("Add Service")
-            if submitted:
-                if not new_display:
-                    st.error("Display Name is required.")
-                else:
-                    services.append({
-                        "Model": new_model,
-                        "Display Name": new_display,
-                        "Interval": new_interval,
-                        "What’s Included": new_description,
+        model_names = sorted([m["Display Name"] for m in service_models])
+        selected_display = st.selectbox("Select Vehicle to Edit", model_names)
+        selected_model = next((m for m in service_models if m["Display Name"] == selected_display), None)
+
+        if selected_model:
+            st.markdown("### Edit Service Intervals")
+            for i, svc in enumerate(selected_model["Services"]):
+                with st.expander(f"Edit: {svc['Interval']}"):
+                    new_interval = st.text_input(f"Interval {i+1}", value=svc["Interval"], key=f"int_{i}")
+                    new_desc = st.text_area(f"What's Included {i+1}", value=svc["What’s Included"], key=f"desc_{i}")
+                    new_price = st.number_input(f"Price {i+1}", value=svc["Price"], key=f"price_{i}")
+
+                    # Save changes into the model
+                    svc["Interval"] = new_interval
+                    svc["What’s Included"] = new_desc
+                    svc["Price"] = new_price
+
+            st.markdown("### Add New Interval")
+            with st.form("add_interval_form"):
+                new_int = st.text_input("New Interval")
+                new_desc = st.text_area("New What's Included")
+                new_price = st.number_input("New Price", min_value=0.0, format="%.2f")
+                add_submitted = st.form_submit_button("Add Interval")
+                if add_submitted:
+                    selected_model["Services"].append({
+                        "Interval": new_int,
+                        "What’s Included": new_desc,
                         "Price": new_price
                     })
                     with open(DATA_FILE, "w") as f:
-                        json.dump(services, f, indent=4)
-                    st.success("Service added successfully!")
+                        json.dump(service_models, f, indent=4)
+                    st.success("New interval added successfully!")
 
-        st.markdown("---")
-        st.markdown("### Edit or Delete Existing Service Entry")
-        display_map = {item["Display Name"] + " – " + item["Interval"]: (item["Model"], item["Interval"]) for item in services}
-        display_names = sorted(display_map.keys())
-        selected_display = st.selectbox("Select Entry to Edit/Delete", display_names, key="edit_display")
-        selected_model, selected_interval = display_map[selected_display]
-
-        record = next((item for item in services if item["Model"] == selected_model and item["Interval"] == selected_interval), None)
-
-        if record:
-            with st.form("edit_service_form"):
-                updated_model = st.text_input("Model", value=record["Model"])
-                updated_display = st.text_input("Display Name", value=record["Display Name"])
-                updated_interval = st.text_input("Interval", value=record["Interval"])
-                updated_description = st.text_area("What's Included", value=record["What’s Included"])
-                updated_price = st.number_input("Price", min_value=0.0, format="%.2f", value=record["Price"])
-                update_submitted = st.form_submit_button("Update Service")
-
-                if update_submitted:
-                    if not updated_display:
-                        st.error("Display Name is required.")
-                    else:
-                        services = [item for item in services if not (item["Model"] == selected_model and item["Interval"] == selected_interval)]
-                        services.append({
-                            "Model": updated_model,
-                            "Display Name": updated_display,
-                            "Interval": updated_interval,
-                            "What’s Included": updated_description,
-                            "Price": updated_price
-                        })
-                        with open(DATA_FILE, "w") as f:
-                            json.dump(services, f, indent=4)
-                        st.success("Service updated successfully!")
-
-            # Delete button outside form
-            if st.button("❌ Delete This Entry"):
-                services = [item for item in services if not (item["Model"] == selected_model and item["Interval"] == selected_interval)]
+            if st.button("💾 Save All Changes"):
                 with open(DATA_FILE, "w") as f:
-                    json.dump(services, f, indent=4)
-                st.success("Entry deleted. Refresh the page to see the changes.")
+                    json.dump(service_models, f, indent=4)
+                st.success("All changes saved.")
 
     else:
         st.warning("Enter the correct PIN to access admin features.")
