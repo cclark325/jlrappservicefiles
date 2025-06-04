@@ -148,7 +148,7 @@ new_parts = st.multiselect(
     key=f"parts_{i}"
 )
 
-                    svc["Parts Used"] = new_parts
+                            svc["Parts Used"] = new_parts
 
             st.markdown("### Add New Interval")
             with st.form("add_interval_form"):
