@@ -56,6 +56,25 @@ if mode == "View Service Menu":
 
         svc = next((s for s in selected_model["Services"] if s["Interval"] == selected_interval), None)
         if svc:
+            from print_utils import generate_service_html, download_link
+
+            # Build parts list
+            parts = []
+            for part_num in svc.get("Parts Used", []):
+                part = get_part_info(part_num)
+                if part:
+                    parts.append(part)
+
+            html_out = generate_service_html(
+                model_name=selected_model["Display Name"],
+                interval=svc["Interval"],
+                description=svc["What’s Included"],
+                parts=parts,
+                labor_hours=svc.get("Labor Hours", 0.0),
+                total_price=calculate_total_price(svc)
+            )
+            st.markdown(download_link(html_out, "Service_Interval_Printout.html"), unsafe_allow_html=True)
+
             st.markdown(f"### {svc['Interval']}")
             st.write(svc["What’s Included"])
 
