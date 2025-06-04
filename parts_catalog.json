@@ -1,17 +1,1 @@
-[
-    {
-        "Part Name": "Oil Filter",
-        "Part Number": "LR123456",
-        "Unit Price": 12.95
-    },
-    {
-        "Part Name": "Air Filter",
-        "Part Number": "LR987654",
-        "Unit Price": 22.5
-    },
-    {
-        "Part Name": "Cabin Filter",
-        "Part Number": "LR246810",
-        "Unit Price": 19.95
-    }
-]
+[]

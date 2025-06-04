@@ -1,7 +1,7 @@
-
 import streamlit as st
 import json
 import os
+import pdfkit
 
 SERVICE_FILE = "service_models.json"
 PARTS_FILE = "parts_catalog.json"
@@ -23,8 +23,6 @@ parts_catalog = load_json(PARTS_FILE)
 config = load_json(CONFIG_FILE)
 
 labor_rate = config.get("Labor Rate", 0.0)
-service_pin = config.get("Service Admin PIN", "0000")
-parts_pin = config.get("Parts Admin PIN", "0000")
 
 def get_part_info(part_number):
     return next((p for p in parts_catalog if p["Part Number"] == part_number), None)
@@ -34,50 +32,71 @@ def calculate_total_price(service):
     labor_total = service.get("Labor Hours", 0.0) * labor_rate
     return parts_total + labor_total
 
-st.set_page_config(page_title="Service Menu", layout="wide")
-st.title("Land Rover / Jaguar Service Menu")
+def generate_service_html(model_name, interval, description, parts, labor_hours, total_price):
+    part_rows = "".join(
+        f"<tr><td>{p['Part Name']}</td><td>{p['Part Number']}</td><td>${p['Unit Price']:.2f}</td></tr>"
+        for p in parts
+    )
+    html = f"""
+    <html>
+    <head>
+        <style>
+            body {{ font-family: Arial, sans-serif; padding: 20px; }}
+            h1, h2 {{ color: #2E3B4E; }}
+            table {{ width: 100%; border-collapse: collapse; margin-top: 20px; }}
+            th, td {{ border: 1px solid #ddd; padding: 8px; text-align: left; }}
+            th {{ background-color: #f2f2f2; }}
+            .total {{ font-weight: bold; font-size: 1.2em; }}
+        </style>
+    </head>
+    <body>
+        <h1>Service Sheet</h1>
+        <h2>{model_name} - {interval}</h2>
+        <p>{description}</p>
+        <h3>Parts Used</h3>
+        <table>
+            <tr><th>Part Name</th><th>Part Number</th><th>Unit Price</th></tr>
+            {part_rows}
+        </table>
+        <p><strong>Labor Hours:</strong> {labor_hours:.2f}</p>
+        <p class="total">Total Price: ${total_price:.2f}</p>
+    </body>
+    </html>
+    """
+    return html
 
-mode = st.sidebar.radio("Choose mode", [
-    "View Service Menu",
-    "Admin Panel 🔐",
-    "Parts Manager 🧰",
-    "Labor Rate Settings ⚙️",
-    "PIN Settings 🔑"
-])
+st.set_page_config(page_title="Printable Service Sheet", layout="centered")
+st.title("Generate Service Sheet PDF")
 
-if mode == "View Service Menu":
-    display_names = sorted([model["Display Name"] for model in service_models])
-    selected_display = st.selectbox("Select Vehicle", display_names)
+display_names = sorted([model["Display Name"] for model in service_models])
+selected_display = st.selectbox("Select Vehicle", display_names)
 
-    selected_model = next((m for m in service_models if m["Display Name"] == selected_display), None)
-    if selected_model:
-        intervals = [svc["Interval"] for svc in selected_model["Services"]]
-        selected_interval = st.selectbox("Select Service Interval", intervals)
+selected_model = next((m for m in service_models if m["Display Name"] == selected_display), None)
+if selected_model:
+    intervals = [svc["Interval"] for svc in selected_model["Services"]]
+    selected_interval = st.selectbox("Select Service Interval", intervals)
 
-        svc = next((s for s in selected_model["Services"] if s["Interval"] == selected_interval), None)
-        if svc:
-            from print_utils import generate_service_html, download_link
+    svc = next((s for s in selected_model["Services"] if s["Interval"] == selected_interval), None)
+    if svc:
+        parts = [get_part_info(p) for p in svc.get("Parts Used", []) if get_part_info(p)]
+        html = generate_service_html(
+            model_name=selected_model["Display Name"],
+            interval=svc["Interval"],
+            description=svc.get("What's Included", ""),
+            parts=parts,
+            labor_hours=svc.get("Labor Hours", 0.0),
+            total_price=calculate_total_price(svc)
+        )
 
-            parts = [get_part_info(p) for p in svc.get("Parts Used", []) if get_part_info(p)]
+        pdf_file = "service_sheet.pdf"
+        try:
+            pdfkit.from_string(html, pdf_file)
+            with open(pdf_file, "rb") as f:
+                st.download_button("📄 Download Service Sheet PDF", f, file_name=pdf_file)
+        except Exception as e:
+            st.error(f"PDF generation failed: {e}")
 
-            html_out = generate_service_html(
-                model_name=selected_model["Display Name"],
-                interval=svc["Interval"],
-                description=svc.get("What's Included", ""),
-                parts=parts,
-                labor_hours=svc.get("Labor Hours", 0.0),
-                total_price=calculate_total_price(svc)
-            )
-            st.markdown(download_link(html_out, "Service_Interval_Printout.html"), unsafe_allow_html=True)
-
-            st.markdown(f"### {svc['Interval']}")
-            st.write(svc.get("What's Included", ""))
-
-            st.markdown("#### Parts Used:")
-            for part in parts:
-                st.write(f"- **{part['Part Name']}** ({part['Part Number']}): ${part['Unit Price']:.2f}")
-
-            st.write(f"**Labor:** {svc.get('Labor Hours', 0.0):.2f} hrs")
-            st.markdown(f"### 💰 Total Price: **${calculate_total_price(svc):.2f}**")
-        else:
-            st.error("Service interval not found. Please check your data.")
+        st.markdown("---")
+        st.components.v1.html(html, height=600, scrolling=True)
+    else:
+        st.warning("Service interval not found.")
