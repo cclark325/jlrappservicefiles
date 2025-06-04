@@ -109,7 +109,7 @@ elif mode == "Admin Panel 🔐":
                 st.success("Vehicle info updated.")
 
     st.markdown("---")
-            st.markdown("### Edit Service Intervals")
+    st.markdown("### Edit Service Intervals")
             for i, svc in enumerate(selected_model["Services"]):
                 with st.expander(f"Edit: {svc['Interval']}"):
                     svc["Interval"] = st.text_input(f"Interval {i+1}", value=svc["Interval"], key=f"int_{i}")
