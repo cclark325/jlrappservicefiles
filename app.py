@@ -79,3 +79,5 @@ if mode == "View Service Menu":
 
             st.write(f"**Labor:** {svc.get('Labor Hours', 0.0):.2f} hrs")
             st.markdown(f"### 💰 Total Price: **${calculate_total_price(svc):.2f}**")
+        else:
+            st.error("Service interval not found. Please check your data.")
