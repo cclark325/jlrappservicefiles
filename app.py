@@ -1,25 +1,59 @@
 
 import streamlit as st
 import json
+import os
 
-# Load service data
-with open("service_intervals.json", "r") as f:
-    services = json.load(f)
+DATA_FILE = "service_intervals.json"
+ADMIN_PIN = "4397"
 
-# Get unique models
-models = sorted(set(item["Model"] for item in services))
+# Load existing services
+if os.path.exists(DATA_FILE):
+    with open(DATA_FILE, "r") as f:
+        services = json.load(f)
+else:
+    services = []
 
+st.set_page_config(page_title="Service Menu", layout="wide")
 st.title("Land Rover / Jaguar Service Menu")
 
-# Model selection
-selected_model = st.selectbox("Select Vehicle Model", models)
+# Sidebar navigation
+mode = st.sidebar.radio("Choose mode", ["View Service Menu", "Admin Panel 🔐"])
 
-# Filter by model
-filtered = [item for item in services if item["Model"] == selected_model]
+if mode == "View Service Menu":
+    models = sorted(set(item["Model"] for item in services))
+    selected_model = st.selectbox("Select Vehicle Model", models)
 
-# Display intervals
-for item in filtered:
-    st.markdown(f"### {item['Interval']}")
-    st.write(item["What’s Included"])
-    st.markdown(f"**Price: ${item['Price']:.2f}**")
-    st.markdown("---")
+    filtered = [item for item in services if item["Model"] == selected_model]
+
+    for item in filtered:
+        st.markdown(f"### {item['Interval']}")
+        st.write(item["What’s Included"])
+        st.markdown(f"**Price: ${item['Price']:.2f}**")
+        st.markdown("---")
+
+elif mode == "Admin Panel 🔐":
+    st.subheader("Admin Access Required")
+    pin = st.text_input("Enter Admin PIN", type="password")
+    if pin == ADMIN_PIN:
+        st.success("Access granted.")
+
+        with st.form("add_service_form"):
+            st.markdown("### Add New Service Entry")
+            new_model = st.text_input("Model (e.g. '15-20 Discovery Sport 2.0L')")
+            new_interval = st.text_input("Interval (e.g. '1 yr/16,000 miles')")
+            new_description = st.text_area("What's Included")
+            new_price = st.number_input("Price (All-In)", min_value=0.0, format="%.2f")
+
+            submitted = st.form_submit_button("Add Service")
+            if submitted:
+                services.append({
+                    "Model": new_model,
+                    "Interval": new_interval,
+                    "What’s Included": new_description,
+                    "Price": new_price
+                })
+                with open(DATA_FILE, "w") as f:
+                    json.dump(services, f, indent=4)
+                st.success("Service added successfully! Refresh the View tab to see it.")
+    else:
+        st.warning("Enter the correct PIN to access admin features.")
