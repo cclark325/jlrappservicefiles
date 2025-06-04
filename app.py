@@ -126,7 +126,7 @@ elif mode == "Admin Panel 🔐":
                     )
                     svc["Parts Used"] = new_parts
 
-            st.markdown("### Add New Interval")
+    st.markdown("### Add New Interval")
             with st.form("add_interval_form"):
                 new_int = st.text_input("New Interval")
                 new_desc = st.text_area("New What's Included")
@@ -156,14 +156,14 @@ elif mode == "Parts Manager 🧰":
     if pin == parts_pin:
         st.success("Access granted.")
 
-        st.markdown("### Existing Parts")
+ st.markdown("### Existing Parts")
         for i, part in enumerate(parts_catalog):
             with st.expander(f"{part['Part Name']} ({part['Part Number']})"):
                 part["Part Name"] = st.text_input(f"Part Name {i}", value=part["Part Name"], key=f"name_{i}")
                 part["Part Number"] = st.text_input(f"Part Number {i}", value=part["Part Number"], key=f"num_{i}")
                 part["Unit Price"] = st.number_input(f"Unit Price {i}", value=part["Unit Price"], key=f"price_{i}")
 
-        st.markdown("### Add New Part")
+ st.markdown("### Add New Part")
         with st.form("add_part_form"):
             pname = st.text_input("Part Name")
             pnum = st.text_input("Part Number")
