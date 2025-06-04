@@ -102,13 +102,11 @@ if mode == "View Service Menu":
                 labor_hours=svc.get("Labor Hours", 0.0),
                 total_price=calculate_total_price(svc)
             )
-            pdf_file = "service_sheet.pdf"
-            try:
-                pdfkit.from_string(html, pdf_file)
-                with open(pdf_file, "rb") as f:
-                    st.download_button("📄 Download Service Sheet PDF", f, file_name=pdf_file)
-            except Exception as e:
-                st.error(f"PDF generation failed: {e}")
+            html_file = "service_sheet.html"
+            with open(html_file, "w") as f:
+                f.write(html)
+            with open(html_file, "rb") as f:
+                st.download_button("📄 Download Service Sheet (HTML)", f, file_name=html_file.name)
             st.markdown("---")
             st.components.v1.html(html, height=600, scrolling=True)
 
