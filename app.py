@@ -110,7 +110,7 @@ elif mode == "Admin Panel 🔐":
 
     st.markdown("---")
     st.markdown("### Edit Service Intervals")
-            for i, svc in enumerate(selected_model["Services"]):
+    for i, svc in enumerate(selected_model["Services"]):
                 with st.expander(f"Edit: {svc['Interval']}"):
                     svc["Interval"] = st.text_input(f"Interval {i+1}", value=svc["Interval"], key=f"int_{i}")
                     svc["What’s Included"] = st.text_area(f"What's Included {i+1}", value=svc["What’s Included"], key=f"desc_{i}")
