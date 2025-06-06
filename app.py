@@ -119,3 +119,21 @@ if mode == "Admin Panel 🔐":
                 st.success("All changes saved.")
     else:
         st.warning("Enter correct Service Admin PIN.")
+
+
+elif mode == "Admin Panel 🔐":
+    st.markdown("### ➕ Add New Vehicle")
+    with st.form("add_vehicle_form"):
+        new_model_code = st.text_input("New Model Code")
+        new_display_name = st.text_input("New Display Name")
+        submitted = st.form_submit_button("Add Vehicle")
+        if submitted:
+            new_vehicle = {
+                "Model": new_model_code,
+                "Display Name": new_display_name,
+                "Services": []
+            }
+            service_models.append(new_vehicle)
+            save_json(SERVICE_FILE, service_models)
+            st.success("New vehicle added.")
+            st.experimental_rerun()
