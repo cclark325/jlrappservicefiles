@@ -140,7 +140,7 @@ elif mode == "🔧 Vehicle Manager":
                     save_json(SERVICE_FILE, service_models)
                     st.success("Interval updated.")
 
-        st.markdown("### ➕ Add New Vehicle"
+        st.markdown("### ➕ Add New Vehicle")
         with st.form("add_vehicle_form"):
             new_model = st.text_input("New Model Code")
             new_display = st.text_input("New Display Name")
