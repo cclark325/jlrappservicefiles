@@ -107,5 +107,26 @@
             "TIMBELT1",
             "TIMBELT2"
         ]
+    },
+    {
+        "Template Name": "Front Wiper Blades",
+        "Interval": "Front Wiper Blades",
+        "What's Included": "Front Wiper Blades",
+        "Labor Hours": 0.1,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Rear Wiper Blade",
+        "Interval": "Rear Wiper Blade",
+        "What's Included": "Rear Wiper Blade",
+        "Labor Hours": 0.1,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Remote Key Fob Battery",
+        "Interval": "Remote Key Fob Battery",
+        "What's Included": "Remote Key Fob Battery",
+        "Labor Hours": 0.0,
+        "Parts Used": []
     }
 ]
