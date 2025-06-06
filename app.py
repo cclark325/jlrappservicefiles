@@ -156,7 +156,25 @@ elif mode == "📦 Template Manager":
     st.header("Service Template Manager")
     pin = st.text_input("Enter Service Admin PIN", type="password", key="template_pin")
     if pin == service_pin:
+        
         st.markdown("### Add Template")
+        with st.form("add_template_form"):
+            name = st.text_input("Template Name")
+            labor = st.number_input("Labor Hours", min_value=0.0, step=0.1)
+            parts = st.multiselect("Parts Used", options=[p["Part Number"] for p in parts_catalog])
+            submitted = st.form_submit_button("Save Template")
+            if submitted:
+                service_templates.append({
+                    "Template Name": name,
+                    "Interval": name,
+                    "What's Included": name,
+                    "Labor Hours": labor,
+                    "Parts Used": parts
+                })
+                save_json(TEMPLATE_FILE, service_templates)
+                st.success("Template saved.")
+                st.rerun()
+
         with st.form("add_template_form"):
             name = st.text_input("Template Name")
             desc = st.text_area("What's Included")
@@ -237,7 +255,25 @@ elif mode == "📦 Template Manager":
     st.header("Service Template Manager")
     pin = st.text_input("Enter Service Admin PIN", type="password", key="template_pin")
     if pin == service_pin:
+        
         st.markdown("### Add Template")
+        with st.form("add_template_form"):
+            name = st.text_input("Template Name")
+            labor = st.number_input("Labor Hours", min_value=0.0, step=0.1)
+            parts = st.multiselect("Parts Used", options=[p["Part Number"] for p in parts_catalog])
+            submitted = st.form_submit_button("Save Template")
+            if submitted:
+                service_templates.append({
+                    "Template Name": name,
+                    "Interval": name,
+                    "What's Included": name,
+                    "Labor Hours": labor,
+                    "Parts Used": parts
+                })
+                save_json(TEMPLATE_FILE, service_templates)
+                st.success("Template saved.")
+                st.rerun()
+
         with st.form("add_template_form"):
             name = st.text_input("Template Name")
             desc = st.text_area("What's Included")
