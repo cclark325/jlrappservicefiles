@@ -1,14 +1,782 @@
 [
-  {
-    "Model": "LR123",
-    "Display Name": "Range Rover Evoque",
-    "Services": [
-      {
-        "Interval": "10,000 Miles",
-        "What's Included": "Oil change, tire rotation, brake inspection",
-        "Labor Hours": 1.5,
-        "Parts Used": ["OIL123", "FILTER456"]
-      }
-    ]
-  }
+    {
+        "Display Name": "2013 Jaguar XE",
+        "Services": []
+    },
+    {
+        "Display Name": "2013 Jaguar XF",
+        "Services": []
+    },
+    {
+        "Display Name": "2013 Jaguar XJ",
+        "Services": []
+    },
+    {
+        "Display Name": "2013 Jaguar F-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2013 Jaguar E-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2013 Jaguar I-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2013 Jaguar F-TYPE",
+        "Services": []
+    },
+    {
+        "Display Name": "2013 Land Rover Defender",
+        "Services": []
+    },
+    {
+        "Display Name": "2013 Land Rover Discovery",
+        "Services": []
+    },
+    {
+        "Display Name": "2013 Land Rover Discovery Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2013 Range Rover",
+        "Services": []
+    },
+    {
+        "Display Name": "2013 Range Rover Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2013 Range Rover Velar",
+        "Services": []
+    },
+    {
+        "Display Name": "2013 Range Rover Evoque",
+        "Services": []
+    },
+    {
+        "Display Name": "2013 Land Rover LR4",
+        "Services": []
+    },
+    {
+        "Display Name": "2014 Jaguar XE",
+        "Services": []
+    },
+    {
+        "Display Name": "2014 Jaguar XF",
+        "Services": []
+    },
+    {
+        "Display Name": "2014 Jaguar XJ",
+        "Services": []
+    },
+    {
+        "Display Name": "2014 Jaguar F-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2014 Jaguar E-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2014 Jaguar I-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2014 Jaguar F-TYPE",
+        "Services": []
+    },
+    {
+        "Display Name": "2014 Land Rover Defender",
+        "Services": []
+    },
+    {
+        "Display Name": "2014 Land Rover Discovery",
+        "Services": []
+    },
+    {
+        "Display Name": "2014 Land Rover Discovery Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2014 Range Rover",
+        "Services": []
+    },
+    {
+        "Display Name": "2014 Range Rover Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2014 Range Rover Velar",
+        "Services": []
+    },
+    {
+        "Display Name": "2014 Range Rover Evoque",
+        "Services": []
+    },
+    {
+        "Display Name": "2014 Land Rover LR4",
+        "Services": []
+    },
+    {
+        "Display Name": "2015 Jaguar XE",
+        "Services": []
+    },
+    {
+        "Display Name": "2015 Jaguar XF",
+        "Services": []
+    },
+    {
+        "Display Name": "2015 Jaguar XJ",
+        "Services": []
+    },
+    {
+        "Display Name": "2015 Jaguar F-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2015 Jaguar E-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2015 Jaguar I-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2015 Jaguar F-TYPE",
+        "Services": []
+    },
+    {
+        "Display Name": "2015 Land Rover Defender",
+        "Services": []
+    },
+    {
+        "Display Name": "2015 Land Rover Discovery",
+        "Services": []
+    },
+    {
+        "Display Name": "2015 Land Rover Discovery Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2015 Range Rover",
+        "Services": []
+    },
+    {
+        "Display Name": "2015 Range Rover Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2015 Range Rover Velar",
+        "Services": []
+    },
+    {
+        "Display Name": "2015 Range Rover Evoque",
+        "Services": []
+    },
+    {
+        "Display Name": "2015 Land Rover LR4",
+        "Services": []
+    },
+    {
+        "Display Name": "2016 Jaguar XE",
+        "Services": []
+    },
+    {
+        "Display Name": "2016 Jaguar XF",
+        "Services": []
+    },
+    {
+        "Display Name": "2016 Jaguar XJ",
+        "Services": []
+    },
+    {
+        "Display Name": "2016 Jaguar F-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2016 Jaguar E-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2016 Jaguar I-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2016 Jaguar F-TYPE",
+        "Services": []
+    },
+    {
+        "Display Name": "2016 Land Rover Defender",
+        "Services": []
+    },
+    {
+        "Display Name": "2016 Land Rover Discovery",
+        "Services": []
+    },
+    {
+        "Display Name": "2016 Land Rover Discovery Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2016 Range Rover",
+        "Services": []
+    },
+    {
+        "Display Name": "2016 Range Rover Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2016 Range Rover Velar",
+        "Services": []
+    },
+    {
+        "Display Name": "2016 Range Rover Evoque",
+        "Services": []
+    },
+    {
+        "Display Name": "2016 Land Rover LR4",
+        "Services": []
+    },
+    {
+        "Display Name": "2017 Jaguar XE",
+        "Services": []
+    },
+    {
+        "Display Name": "2017 Jaguar XF",
+        "Services": []
+    },
+    {
+        "Display Name": "2017 Jaguar XJ",
+        "Services": []
+    },
+    {
+        "Display Name": "2017 Jaguar F-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2017 Jaguar E-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2017 Jaguar I-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2017 Jaguar F-TYPE",
+        "Services": []
+    },
+    {
+        "Display Name": "2017 Land Rover Defender",
+        "Services": []
+    },
+    {
+        "Display Name": "2017 Land Rover Discovery",
+        "Services": []
+    },
+    {
+        "Display Name": "2017 Land Rover Discovery Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2017 Range Rover",
+        "Services": []
+    },
+    {
+        "Display Name": "2017 Range Rover Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2017 Range Rover Velar",
+        "Services": []
+    },
+    {
+        "Display Name": "2017 Range Rover Evoque",
+        "Services": []
+    },
+    {
+        "Display Name": "2017 Land Rover LR4",
+        "Services": []
+    },
+    {
+        "Display Name": "2018 Jaguar XE",
+        "Services": []
+    },
+    {
+        "Display Name": "2018 Jaguar XF",
+        "Services": []
+    },
+    {
+        "Display Name": "2018 Jaguar XJ",
+        "Services": []
+    },
+    {
+        "Display Name": "2018 Jaguar F-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2018 Jaguar E-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2018 Jaguar I-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2018 Jaguar F-TYPE",
+        "Services": []
+    },
+    {
+        "Display Name": "2018 Land Rover Defender",
+        "Services": []
+    },
+    {
+        "Display Name": "2018 Land Rover Discovery",
+        "Services": []
+    },
+    {
+        "Display Name": "2018 Land Rover Discovery Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2018 Range Rover",
+        "Services": []
+    },
+    {
+        "Display Name": "2018 Range Rover Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2018 Range Rover Velar",
+        "Services": []
+    },
+    {
+        "Display Name": "2018 Range Rover Evoque",
+        "Services": []
+    },
+    {
+        "Display Name": "2018 Land Rover LR4",
+        "Services": []
+    },
+    {
+        "Display Name": "2019 Jaguar XE",
+        "Services": []
+    },
+    {
+        "Display Name": "2019 Jaguar XF",
+        "Services": []
+    },
+    {
+        "Display Name": "2019 Jaguar XJ",
+        "Services": []
+    },
+    {
+        "Display Name": "2019 Jaguar F-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2019 Jaguar E-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2019 Jaguar I-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2019 Jaguar F-TYPE",
+        "Services": []
+    },
+    {
+        "Display Name": "2019 Land Rover Defender",
+        "Services": []
+    },
+    {
+        "Display Name": "2019 Land Rover Discovery",
+        "Services": []
+    },
+    {
+        "Display Name": "2019 Land Rover Discovery Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2019 Range Rover",
+        "Services": []
+    },
+    {
+        "Display Name": "2019 Range Rover Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2019 Range Rover Velar",
+        "Services": []
+    },
+    {
+        "Display Name": "2019 Range Rover Evoque",
+        "Services": []
+    },
+    {
+        "Display Name": "2019 Land Rover LR4",
+        "Services": []
+    },
+    {
+        "Display Name": "2020 Jaguar XE",
+        "Services": []
+    },
+    {
+        "Display Name": "2020 Jaguar XF",
+        "Services": []
+    },
+    {
+        "Display Name": "2020 Jaguar XJ",
+        "Services": []
+    },
+    {
+        "Display Name": "2020 Jaguar F-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2020 Jaguar E-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2020 Jaguar I-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2020 Jaguar F-TYPE",
+        "Services": []
+    },
+    {
+        "Display Name": "2020 Land Rover Defender",
+        "Services": []
+    },
+    {
+        "Display Name": "2020 Land Rover Discovery",
+        "Services": []
+    },
+    {
+        "Display Name": "2020 Land Rover Discovery Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2020 Range Rover",
+        "Services": []
+    },
+    {
+        "Display Name": "2020 Range Rover Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2020 Range Rover Velar",
+        "Services": []
+    },
+    {
+        "Display Name": "2020 Range Rover Evoque",
+        "Services": []
+    },
+    {
+        "Display Name": "2020 Land Rover LR4",
+        "Services": []
+    },
+    {
+        "Display Name": "2021 Jaguar XE",
+        "Services": []
+    },
+    {
+        "Display Name": "2021 Jaguar XF",
+        "Services": []
+    },
+    {
+        "Display Name": "2021 Jaguar XJ",
+        "Services": []
+    },
+    {
+        "Display Name": "2021 Jaguar F-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2021 Jaguar E-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2021 Jaguar I-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2021 Jaguar F-TYPE",
+        "Services": []
+    },
+    {
+        "Display Name": "2021 Land Rover Defender",
+        "Services": []
+    },
+    {
+        "Display Name": "2021 Land Rover Discovery",
+        "Services": []
+    },
+    {
+        "Display Name": "2021 Land Rover Discovery Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2021 Range Rover",
+        "Services": []
+    },
+    {
+        "Display Name": "2021 Range Rover Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2021 Range Rover Velar",
+        "Services": []
+    },
+    {
+        "Display Name": "2021 Range Rover Evoque",
+        "Services": []
+    },
+    {
+        "Display Name": "2021 Land Rover LR4",
+        "Services": []
+    },
+    {
+        "Display Name": "2022 Jaguar XE",
+        "Services": []
+    },
+    {
+        "Display Name": "2022 Jaguar XF",
+        "Services": []
+    },
+    {
+        "Display Name": "2022 Jaguar XJ",
+        "Services": []
+    },
+    {
+        "Display Name": "2022 Jaguar F-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2022 Jaguar E-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2022 Jaguar I-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2022 Jaguar F-TYPE",
+        "Services": []
+    },
+    {
+        "Display Name": "2022 Land Rover Defender",
+        "Services": []
+    },
+    {
+        "Display Name": "2022 Land Rover Discovery",
+        "Services": []
+    },
+    {
+        "Display Name": "2022 Land Rover Discovery Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2022 Range Rover",
+        "Services": []
+    },
+    {
+        "Display Name": "2022 Range Rover Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2022 Range Rover Velar",
+        "Services": []
+    },
+    {
+        "Display Name": "2022 Range Rover Evoque",
+        "Services": []
+    },
+    {
+        "Display Name": "2022 Land Rover LR4",
+        "Services": []
+    },
+    {
+        "Display Name": "2023 Jaguar XE",
+        "Services": []
+    },
+    {
+        "Display Name": "2023 Jaguar XF",
+        "Services": []
+    },
+    {
+        "Display Name": "2023 Jaguar XJ",
+        "Services": []
+    },
+    {
+        "Display Name": "2023 Jaguar F-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2023 Jaguar E-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2023 Jaguar I-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2023 Jaguar F-TYPE",
+        "Services": []
+    },
+    {
+        "Display Name": "2023 Land Rover Defender",
+        "Services": []
+    },
+    {
+        "Display Name": "2023 Land Rover Discovery",
+        "Services": []
+    },
+    {
+        "Display Name": "2023 Land Rover Discovery Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2023 Range Rover",
+        "Services": []
+    },
+    {
+        "Display Name": "2023 Range Rover Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2023 Range Rover Velar",
+        "Services": []
+    },
+    {
+        "Display Name": "2023 Range Rover Evoque",
+        "Services": []
+    },
+    {
+        "Display Name": "2023 Land Rover LR4",
+        "Services": []
+    },
+    {
+        "Display Name": "2024 Jaguar XE",
+        "Services": []
+    },
+    {
+        "Display Name": "2024 Jaguar XF",
+        "Services": []
+    },
+    {
+        "Display Name": "2024 Jaguar XJ",
+        "Services": []
+    },
+    {
+        "Display Name": "2024 Jaguar F-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2024 Jaguar E-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2024 Jaguar I-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2024 Jaguar F-TYPE",
+        "Services": []
+    },
+    {
+        "Display Name": "2024 Land Rover Defender",
+        "Services": []
+    },
+    {
+        "Display Name": "2024 Land Rover Discovery",
+        "Services": []
+    },
+    {
+        "Display Name": "2024 Land Rover Discovery Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2024 Range Rover",
+        "Services": []
+    },
+    {
+        "Display Name": "2024 Range Rover Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2024 Range Rover Velar",
+        "Services": []
+    },
+    {
+        "Display Name": "2024 Range Rover Evoque",
+        "Services": []
+    },
+    {
+        "Display Name": "2024 Land Rover LR4",
+        "Services": []
+    },
+    {
+        "Display Name": "2025 Jaguar XE",
+        "Services": []
+    },
+    {
+        "Display Name": "2025 Jaguar XF",
+        "Services": []
+    },
+    {
+        "Display Name": "2025 Jaguar XJ",
+        "Services": []
+    },
+    {
+        "Display Name": "2025 Jaguar F-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2025 Jaguar E-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2025 Jaguar I-PACE",
+        "Services": []
+    },
+    {
+        "Display Name": "2025 Jaguar F-TYPE",
+        "Services": []
+    },
+    {
+        "Display Name": "2025 Land Rover Defender",
+        "Services": []
+    },
+    {
+        "Display Name": "2025 Land Rover Discovery",
+        "Services": []
+    },
+    {
+        "Display Name": "2025 Land Rover Discovery Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2025 Range Rover",
+        "Services": []
+    },
+    {
+        "Display Name": "2025 Range Rover Sport",
+        "Services": []
+    },
+    {
+        "Display Name": "2025 Range Rover Velar",
+        "Services": []
+    },
+    {
+        "Display Name": "2025 Range Rover Evoque",
+        "Services": []
+    },
+    {
+        "Display Name": "2025 Land Rover LR4",
+        "Services": []
+    }
 ]
