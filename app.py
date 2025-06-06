@@ -120,10 +120,13 @@ elif mode == "🔧 Vehicle Manager":
     st.title("🔧 Vehicle Manager")
     pin = st.text_input("Enter Service Admin PIN", type="password")
     if pin == service_pin:
+        
         names = [v["Display Name"] for v in service_models]
         selected_name = st.selectbox("Select Vehicle", names)
         idx = next((i for i, v in enumerate(service_models) if v["Display Name"] == selected_name), None)
         selected_model = service_models[idx]
+
+        st.text_input("Edit Display Name", value=selected_model["Display Name"], key="edit_display_name")
 
         st.markdown("### Existing Intervals")
         intervals_to_delete = []
@@ -153,10 +156,11 @@ elif mode == "🔧 Vehicle Manager":
             submit = st.form_submit_button("Add")
             if submit:
                 selected_template = next((t for t in service_templates if t["Template Name"] == template), {})
+                labor = selected_template["Labor Hours"] if selected_template else 0.0
                 selected_model["Services"].append({
                     "Interval": new_int,
                     "What's Included": template,
-                    "Labor Hours": selected_template.get("Labor Hours", 0.0),
+                    "Labor Hours": labor,
                     "Parts Used": parts
                 })
                 service_models[idx] = selected_model
@@ -164,7 +168,6 @@ elif mode == "🔧 Vehicle Manager":
                 st.success("Interval added.")
                 st.experimental_rerun()
 
-        st.markdown("### ➕ Add New Vehicle")
         new_display_name = st.text_input("Display Name")
         if st.button("Add Vehicle"):
             if new_display_name and new_display_name not in names:
