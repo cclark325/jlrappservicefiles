@@ -44,6 +44,13 @@ st.title("Land Rover / Jaguar Service Menu")
 mode = st.sidebar.radio("Select Mode", [
     "👨‍🔧 Advisor Dashboard",
     "🔧 Vehicle Manager",
+    "📦 Template Manager",
+    "🧰 Parts Manager",
+    "⚙️ Labor Rate Settings",
+    "🔑 PIN Settings"
+
+    "👨‍🔧 Advisor Dashboard",
+    "🔧 Vehicle Manager",
     "📦 Template Manager"
 ])
 
@@ -213,3 +220,58 @@ elif mode == "🔑 PIN Settings":
             st.success("PINs updated.")
     else:
         st.warning("Enter correct current Service Admin PIN.")
+
+
+elif mode == "⚙️ Labor Rate Settings":
+    st.header("Global Labor Rate Setting")
+    pin = st.text_input("Enter Service Admin PIN", type="password", key="rate_pin")
+    if pin == service_pin:
+        new_rate = st.number_input("Labor Rate ($/hr)", min_value=0.0, value=labor_rate, step=1.0)
+        if st.button("💾 Update Labor Rate"):
+            config["Labor Rate"] = new_rate
+            save_json(CONFIG_FILE, config)
+            st.success("Labor rate updated. Refresh to apply.")
+    else:
+        st.warning("Enter correct Service Admin PIN.")
+
+# Patch Template Manager for edit support
+elif mode == "📦 Template Manager":
+    st.header("Service Template Manager")
+    pin = st.text_input("Enter Service Admin PIN", type="password", key="template_pin")
+    if pin == service_pin:
+        st.markdown("### Add Template")
+        with st.form("add_template_form"):
+            name = st.text_input("Template Name")
+            desc = st.text_area("What's Included")
+            labor = st.number_input("Labor Hours", min_value=0.0, step=0.1)
+            parts = st.multiselect("Parts Used", options=[p["Part Number"] for p in parts_catalog])
+            submitted = st.form_submit_button("Save Template")
+            if submitted:
+                service_templates.append({
+                    "Template Name": name,
+                    "Interval": name,
+                    "What's Included": desc,
+                    "Labor Hours": labor,
+                    "Parts Used": parts
+                })
+                save_json(TEMPLATE_FILE, service_templates)
+                st.success("Template saved.")
+                st.rerun()
+
+        st.markdown("### Existing Templates")
+        for i, tpl in enumerate(service_templates):
+            with st.expander(tpl["Template Name"]):
+                tpl["Template Name"] = st.text_input(f"Edit Template Name {i}", value=tpl["Template Name"], key=f"tpl_name_{i}")
+                tpl["What's Included"] = st.text_area(f"Edit What's Included {i}", value=tpl["What's Included"], key=f"tpl_desc_{i}")
+                tpl["Labor Hours"] = st.number_input(f"Edit Labor {i}", min_value=0.0, value=tpl["Labor Hours"], step=0.1, key=f"tpl_labor_{i}")
+                tpl["Parts Used"] = st.multiselect(f"Edit Parts {i}", options=[p["Part Number"] for p in parts_catalog], default=tpl["Parts Used"], key=f"tpl_parts_{i}")
+                if st.button(f"💾 Save Changes to Template {i}", key=f"tpl_save_{i}"):
+                    service_templates[i] = tpl
+                    save_json(TEMPLATE_FILE, service_templates)
+                    st.success("Template updated.")
+                if st.button(f"❌ Delete Template {i}", key=f"tpl_del_{i}"):
+                    service_templates.pop(i)
+                    save_json(TEMPLATE_FILE, service_templates)
+                    st.rerun()
+    else:
+        st.warning("Enter valid PIN to manage templates.")
