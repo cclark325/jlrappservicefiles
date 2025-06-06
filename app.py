@@ -182,3 +182,34 @@ elif mode == "📦 Template Manager":
                     st.rerun()
     else:
         st.warning("Enter valid PIN to manage templates.")
+
+
+elif mode == "🧰 Parts Manager":
+    st.header("Parts Catalog Editor")
+    pin = st.text_input("Enter Parts Admin PIN", type="password", key="parts_pin")
+    if pin == parts_pin:
+        st.success("Access granted.")
+        for i, part in enumerate(parts_catalog):
+            with st.expander(f"{part['Part Name']} ({part['Part Number']})"):
+                part["Part Name"] = st.text_input(f"Part Name {i}", value=part["Part Name"], key=f"name_{i}")
+                part["Part Number"] = st.text_input(f"Part Number {i}", value=part["Part Number"], key=f"num_{i}")
+                part["Unit Price"] = st.number_input(f"Unit Price {i}", value=part["Unit Price"], key=f"price_{i}")
+        if st.button("💾 Save All Parts"):
+            save_json(PARTS_FILE, parts_catalog)
+            st.success("All parts saved.")
+    else:
+        st.warning("Enter correct Parts Admin PIN.")
+
+elif mode == "🔑 PIN Settings":
+    st.header("Update Admin PINs")
+    pin = st.text_input("Enter Current Service Admin PIN", type="password", key="pin_pin")
+    if pin == service_pin:
+        new_service_pin = st.text_input("New Service Admin PIN", type="password")
+        new_parts_pin = st.text_input("New Parts Admin PIN", type="password")
+        if st.button("Update Admin PINs"):
+            config["Service Admin PIN"] = new_service_pin
+            config["Parts Admin PIN"] = new_parts_pin
+            save_json(CONFIG_FILE, config)
+            st.success("PINs updated.")
+    else:
+        st.warning("Enter correct current Service Admin PIN.")
