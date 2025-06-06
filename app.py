@@ -91,7 +91,7 @@ elif mode == "Admin Panel 🔐":
                     service_models.append(new_vehicle)
                     save_json(SERVICE_FILE, service_models)
                     st.success("New vehicle added.")
-                    st.experimental_rerun()
+                    st.rerun()
 
         if not service_models:
             st.info("No vehicles available to edit.")
@@ -138,7 +138,7 @@ elif mode == "Admin Panel 🔐":
                         del selected_model["Services"][i]
                     service_models[selected_index] = selected_model
                     save_json(SERVICE_FILE, service_models)
-                    st.experimental_rerun()
+                    st.rerun()
 
                 st.markdown("### Add New Interval")
                 with st.form("add_interval_form"):
@@ -157,6 +157,6 @@ elif mode == "Admin Panel 🔐":
                         service_models[selected_index] = selected_model
                         save_json(SERVICE_FILE, service_models)
                         st.success("New interval added.")
-                        st.experimental_rerun()
+                        st.rerun()
     else:
         st.warning("Enter correct Service Admin PIN.")
