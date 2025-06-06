@@ -158,7 +158,7 @@ elif mode == "📦 Template Manager":
     if pin == service_pin:
         
         st.markdown("### Add Template")
-        with st.form("add_template_form"):
+        with st.form("add_new_template_form"):
             name = st.text_input("Template Name")
             labor = st.number_input("Labor Hours", min_value=0.0, step=0.1)
             parts = st.multiselect("Parts Used", options=[p["Part Number"] for p in parts_catalog])
@@ -175,7 +175,7 @@ elif mode == "📦 Template Manager":
                 st.success("Template saved.")
                 st.rerun()
 
-        with st.form("add_template_form"):
+        with st.form("add_new_template_form"):
             name = st.text_input("Template Name")
             desc = st.text_area("What's Included")
             labor = st.number_input("Labor Hours", min_value=0.0, step=0.1)
@@ -257,7 +257,7 @@ elif mode == "📦 Template Manager":
     if pin == service_pin:
         
         st.markdown("### Add Template")
-        with st.form("add_template_form"):
+        with st.form("add_new_template_form"):
             name = st.text_input("Template Name")
             labor = st.number_input("Labor Hours", min_value=0.0, step=0.1)
             parts = st.multiselect("Parts Used", options=[p["Part Number"] for p in parts_catalog])
@@ -274,7 +274,7 @@ elif mode == "📦 Template Manager":
                 st.success("Template saved.")
                 st.rerun()
 
-        with st.form("add_template_form"):
+        with st.form("add_new_template_form"):
             name = st.text_input("Template Name")
             desc = st.text_area("What's Included")
             labor = st.number_input("Labor Hours", min_value=0.0, step=0.1)
