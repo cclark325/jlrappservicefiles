@@ -137,12 +137,40 @@ if mode == "Admin Panel 🔐":
 
             st.markdown("### ➕ Add New Custom Interval")
             with st.form("add_interval_form"):
+                st.markdown("### 🧩 Add New Interval from Multiple Templates")
+                selected_templates = st.multiselect("Select Templates to Include", [tpl["Template Name"] for tpl in service_templates])
+
                 new_int = st.text_input("New Interval")
                 new_desc = st.text_area("New What's Included")
                 new_labor_hours = st.number_input("New Labor Hours", min_value=0.0, step=0.1)
                 new_parts = st.multiselect("New Parts Used", options=[p["Part Number"] for p in parts_catalog])
                 add_submitted = st.form_submit_button("Add Interval")
+                
                 if add_submitted:
+                    combined_description = new_desc
+                    combined_parts = new_parts
+                    combined_labor = new_labor_hours
+
+                    for tpl_name in selected_templates:
+                        tpl = next((t for t in service_templates if t["Template Name"] == tpl_name), None)
+                        if tpl:
+                            combined_description += f"\n- " + tpl.get("What's Included", "")
+                            combined_labor += tpl.get("Labor Hours", 0.0)
+                            for part in tpl.get("Parts Used", []):
+                                if part not in combined_parts:
+                                    combined_parts.append(part)
+
+                    selected_model["Services"].append({
+                        "Interval": new_int,
+                        "What's Included": combined_description,
+                        "Labor Hours": combined_labor,
+                        "Parts Used": combined_parts
+                    })
+                    service_models[selected_index] = selected_model
+                    save_json(SERVICE_FILE, service_models)
+                    st.success("New interval with templates added.")
+                    st.rerun()
+
                     selected_model["Services"].append({
                         "Interval": new_int,
                         "What's Included": new_desc,
