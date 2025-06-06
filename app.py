@@ -121,17 +121,26 @@ elif mode == "🔧 Vehicle Manager":
                 save_json(SERVICE_FILE, service_models)
                 st.success("Service interval added.")
 
+        
         st.markdown("### Existing Intervals")
         for i, svc in enumerate(selected_model.get("Services", [])):
-            with st.expander(f"{svc['Interval']}"):
-                st.text(svc.get("What's Included", ""))
-                if st.button("❌ Delete", key=f"del_{i}"):
-                    selected_model["Services"].pop(i)
+            with st.expander(f"Edit Interval: {svc['Interval']}"):
+                svc["Interval"] = st.text_input(f"Interval Name {i}", value=svc["Interval"], key=f"edit_int_{i}")
+                svc["What's Included"] = st.text_area(f"Included Services {i}", value=svc["What's Included"], key=f"edit_desc_{i}")
+                svc["Labor Hours"] = st.number_input(f"Labor Hours {i}", min_value=0.0, value=svc.get("Labor Hours", 0.0), step=0.1, key=f"edit_labor_{i}")
+                svc["Parts Used"] = st.multiselect(
+                    f"Parts Used {i}",
+                    options=[p["Part Number"] for p in parts_catalog],
+                    default=[p for p in svc.get("Parts Used", []) if p in [p["Part Number"] for p in parts_catalog]],
+                    key=f"edit_parts_{i}"
+                )
+                if st.button(f"💾 Save Interval {i}", key=f"save_int_{i}"):
+                    selected_model["Services"][i] = svc
                     service_models[idx] = selected_model
                     save_json(SERVICE_FILE, service_models)
-                    st.rerun()
+                    st.success("Interval updated.")
 
-        st.markdown("### ➕ Add New Vehicle")
+        st.markdown("### ➕ Add New Vehicle"
         with st.form("add_vehicle_form"):
             new_model = st.text_input("New Model Code")
             new_display = st.text_input("New Display Name")
@@ -167,7 +176,7 @@ elif mode == "📦 Template Manager":
                 "Interval": name,
                 "What's Included": name,
                 "Labor Hours": labor,
-                "Parts Used": parts
+                "Parts Used": []  # Templates no longer store parts
             })
             save_json(TEMPLATE_FILE, service_templates)
             st.success("Template saved.")
@@ -269,7 +278,7 @@ elif mode == "📦 Template Manager":
                     "Interval": name,
                     "What's Included": name,
                     "Labor Hours": labor,
-                    "Parts Used": parts
+                    "Parts Used": []  # Templates no longer store parts
                 })
                 save_json(TEMPLATE_FILE, service_templates)
                 st.success("Template saved.")
@@ -287,7 +296,7 @@ elif mode == "📦 Template Manager":
                     "Interval": name,
                     "What's Included": desc,
                     "Labor Hours": labor,
-                    "Parts Used": parts
+                    "Parts Used": []  # Templates no longer store parts
                 })
                 save_json(TEMPLATE_FILE, service_templates)
                 st.success("Template saved.")
