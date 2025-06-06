@@ -1,21 +1,18 @@
-
 import streamlit as st
 import json
 import os
-import pdfkit
 
 SERVICE_FILE = "service_models.json"
 PARTS_FILE = "parts_catalog.json"
 CONFIG_FILE = "config.json"
 
-# Load and save helpers
 def load_json(file_path):
     if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
         try:
             with open(file_path, "r") as f:
                 return json.load(f)
         except json.JSONDecodeError:
-            st.error(f"Error loading {file_path}: file is corrupted.")
+            st.error(f"Error loading {file_path}. Please check formatting.")
     return []
 
 def save_json(file_path, data):
@@ -137,18 +134,17 @@ elif mode == "Admin Panel 🔐":
                     svc["Interval"] = st.text_input(f"Interval {i+1}", value=svc["Interval"], key=f"int_{i}")
                     svc["What's Included"] = st.text_area(f"What's Included {i+1}", value=svc.get("What's Included", ""), key=f"desc_{i}")
                     svc["Labor Hours"] = st.number_input(f"Labor Hours {i+1}", value=svc.get("Labor Hours", 0.0), step=0.1, key=f"lh_{i}")
-                    current_parts = svc.get("Parts Used", [])
-                    
-part_options = [p["Part Number"] for p in parts_catalog]
-valid_defaults = [p for p in current_parts if p in part_options]
-new_parts = st.multiselect(
-    f"Select Parts {i+1}",
-    options=part_options,
-    default=valid_defaults,
-    key=f"parts_{i}"
-)
 
-                            svc["Parts Used"] = new_parts
+                    current_parts = svc.get("Parts Used", [])
+                    part_options = [p["Part Number"] for p in parts_catalog]
+                    valid_defaults = [p for p in current_parts if p in part_options]
+                    new_parts = st.multiselect(
+                        f"Select Parts {i+1}",
+                        options=part_options,
+                        default=valid_defaults,
+                        key=f"parts_{i}"
+                    )
+                    svc["Parts Used"] = new_parts
 
             st.markdown("### Add New Interval")
             with st.form("add_interval_form"):
