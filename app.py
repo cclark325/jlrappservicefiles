@@ -152,60 +152,43 @@ elif mode == "🔧 Vehicle Manager":
     else:
         st.warning("Enter valid Service Admin PIN.")
 
+
 elif mode == "📦 Template Manager":
     st.header("Service Template Manager")
     pin = st.text_input("Enter Service Admin PIN", type="password", key="template_pin")
     if pin == service_pin:
-        
         st.markdown("### Add Template")
-        with st.form("form_add_template_unique_001"):
-            name = st.text_input("Template Name")
-            labor = st.number_input("Labor Hours", min_value=0.0, step=0.1)
-            parts = st.multiselect("Parts Used", options=[p["Part Number"] for p in parts_catalog])
-            submitted = st.form_submit_button("Save Template")
-            if submitted:
-                service_templates.append({
-                    "Template Name": name,
-                    "Interval": name,
-                    "What's Included": name,
-                    "Labor Hours": labor,
-                    "Parts Used": parts
-                })
-                save_json(TEMPLATE_FILE, service_templates)
-                st.success("Template saved.")
-                st.rerun()
-
-        with st.form("form_add_template_unique_001"):
-            name = st.text_input("Template Name")
-            desc = st.text_area("What's Included")
-            labor = st.number_input("Labor Hours", min_value=0.0, step=0.1)
-            parts = st.multiselect("Parts Used", options=[p["Part Number"] for p in parts_catalog])
-            submitted = st.form_submit_button("Save Template")
-            if submitted:
-                service_templates.append({
-                    "Template Name": name,
-                    "Interval": name,
-                    "What's Included": desc,
-                    "Labor Hours": labor,
-                    "Parts Used": parts
-                })
-                save_json(TEMPLATE_FILE, service_templates)
-                st.success("Template saved.")
-                st.rerun()
+        name = st.text_input("Template Name")
+        labor = st.number_input("Labor Hours", min_value=0.0, step=0.1, key="template_labor")
+        parts = st.multiselect("Parts Used", options=[p["Part Number"] for p in parts_catalog], key="template_parts")
+        if st.button("Save Template"):
+            service_templates.append({
+                "Template Name": name,
+                "Interval": name,
+                "What's Included": name,
+                "Labor Hours": labor,
+                "Parts Used": parts
+            })
+            save_json(TEMPLATE_FILE, service_templates)
+            st.success("Template saved.")
+            st.rerun()
 
         st.markdown("### Existing Templates")
         for i, tpl in enumerate(service_templates):
             with st.expander(tpl["Template Name"]):
-                st.write(tpl["What's Included"])
-                st.write(f"Labor: {tpl['Labor Hours']} hrs")
-                st.write(f"Parts: {', '.join(tpl['Parts Used'])}")
-                if st.button("❌ Delete Template", key=f"tpl_del_{i}"):
+                tpl["Template Name"] = st.text_input(f"Edit Template Name {i}", value=tpl["Template Name"], key=f"tpl_name_{i}")
+                tpl["Labor Hours"] = st.number_input(f"Edit Labor {i}", min_value=0.0, value=tpl["Labor Hours"], step=0.1, key=f"tpl_labor_{i}")
+                tpl["Parts Used"] = st.multiselect(f"Edit Parts {i}", options=[p["Part Number"] for p in parts_catalog], default=tpl["Parts Used"], key=f"tpl_parts_{i}")
+                if st.button(f"💾 Save Changes to Template {i}", key=f"tpl_save_{i}"):
+                    service_templates[i] = tpl
+                    save_json(TEMPLATE_FILE, service_templates)
+                    st.success("Template updated.")
+                if st.button(f"❌ Delete Template {i}", key=f"tpl_del_{i}"):
                     service_templates.pop(i)
                     save_json(TEMPLATE_FILE, service_templates)
                     st.rerun()
     else:
         st.warning("Enter valid PIN to manage templates.")
-
 
 elif mode == "🧰 Parts Manager":
     st.header("Parts Catalog Editor")
@@ -217,12 +200,26 @@ elif mode == "🧰 Parts Manager":
                 part["Part Name"] = st.text_input(f"Part Name {i}", value=part["Part Name"], key=f"name_{i}")
                 part["Part Number"] = st.text_input(f"Part Number {i}", value=part["Part Number"], key=f"num_{i}")
                 part["Unit Price"] = st.number_input(f"Unit Price {i}", value=part["Unit Price"], key=f"price_{i}")
+
+        st.markdown("### ➕ Add New Part")
+        pname = st.text_input("New Part Name")
+        pnum = st.text_input("New Part Number")
+        pprice = st.number_input("New Unit Price", min_value=0.0, format="%.2f")
+        if st.button("Add Part"):
+            parts_catalog.append({
+                "Part Name": pname,
+                "Part Number": pnum,
+                "Unit Price": pprice
+            })
+            save_json(PARTS_FILE, parts_catalog)
+            st.success("Part added.")
+            st.rerun()
+
         if st.button("💾 Save All Parts"):
             save_json(PARTS_FILE, parts_catalog)
             st.success("All parts saved.")
     else:
         st.warning("Enter correct Parts Admin PIN.")
-
 elif mode == "🔑 PIN Settings":
     st.header("Update Admin PINs")
     pin = st.text_input("Enter Current Service Admin PIN", type="password", key="pin_pin")
