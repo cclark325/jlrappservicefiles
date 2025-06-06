@@ -41,6 +41,7 @@ def calculate_total_price(service):
 st.set_page_config(page_title="Service Menu", layout="wide")
 st.title("Land Rover / Jaguar Service Menu")
 
+
 mode = st.sidebar.radio("Select Mode", [
     "👨‍🔧 Advisor Dashboard",
     "🔧 Vehicle Manager",
@@ -50,10 +51,10 @@ mode = st.sidebar.radio("Select Mode", [
     "🔑 PIN Settings"
 ])
 
+
 if mode == "👨‍🔧 Advisor Dashboard":
     st.header("Advisor View")
-    display_names = sorted([model["Display Name"] for model in service_models
-
+    display_names = sorted([model["Display Name"] for model in service_models])
     if not display_names:
         st.warning("No vehicles available.")
     else:
@@ -67,8 +68,7 @@ if mode == "👨‍🔧 Advisor Dashboard":
                 st.subheader(f"Service Interval: {svc['Interval']}")
                 st.markdown(svc.get("What's Included", ""))
                 st.markdown("### Parts Used:")
-                for p in svc.get("Parts Used", [
-:
+                for p in svc.get("Parts Used", []):
                     part = get_part_info(p)
                     if part:
                         st.write(f"- **{part['Part Name']}** ({part['Part Number']}): ${part['Unit Price']:.2f}")
@@ -81,14 +81,12 @@ elif mode == "🔧 Vehicle Manager":
     st.header("Manage Vehicles and Services")
     pin = st.text_input("Enter Service Admin PIN", type="password")
     if pin == service_pin:
-        selected_display = st.selectbox("Edit Existing Vehicle", [m["Display Name"] for m in service_models
-
+        selected_display = st.selectbox("Edit Existing Vehicle", [m["Display Name"] for m in service_models])
         selected_model = next((m for m in service_models if m["Display Name"] == selected_display), None)
         idx = service_models.index(selected_model)
 
         st.markdown("### Edit Vehicle")
-        selected_model["Display Name"] = st.text_input("Display Name", value=selected_model["Display Name"
-
+        selected_model["Display Name"] = st.text_input("Display Name", value=selected_model["Display Name"])
         selected_model["Model"] = st.text_input("Model Code", value=selected_model.get("Model", ""))
         if st.button("💾 Save Vehicle Info"):
             service_models[idx] = selected_model
@@ -98,8 +96,7 @@ elif mode == "🔧 Vehicle Manager":
         st.markdown("### Add Service Interval")
         with st.form("add_interval_form"):
             interval = st.text_input("Interval Name")
-            selected_templates = st.multiselect("Templates to include", [t["Template Name"] for t in service_templates
-
+            selected_templates = st.multiselect("Templates to include", [t["Template Name"] for t in service_templates])
             # custom_desc = st.text_area("Additional Notes")
             submitted = st.form_submit_button("Add Interval")
             if submitted:
@@ -110,8 +107,7 @@ elif mode == "🔧 Vehicle Manager":
                     tpl = next(t for t in service_templates if t["Template Name"] == name)
                     combined_desc += f"\n- {tpl.get('Template Name', tpl.get('Interval', 'Unnamed Template'))}"
                     combined_labor += tpl.get("Labor Hours", 0.0)
-                    for part in tpl.get("Parts Used", [
-:
+                    for part in tpl.get("Parts Used", []):
                         if part not in combined_parts:
                             combined_parts.append(part)
                 svc = {
@@ -120,15 +116,13 @@ elif mode == "🔧 Vehicle Manager":
                     "Labor Hours": combined_labor,
                     "Parts Used": combined_parts
                 }
-                selected_model.setdefault("Services", [
-.append(svc)
+                selected_model.setdefault("Services", []).append(svc)
                 service_models[idx] = selected_model
                 save_json(SERVICE_FILE, service_models)
                 st.success("Service interval added.")
 
         st.markdown("### Existing Intervals")
-        for i, svc in enumerate(selected_model.get("Services", [
-):
+        for i, svc in enumerate(selected_model.get("Services", [])):
             with st.expander(f"{svc['Interval']}"):
                 st.text(svc.get("What's Included", ""))
                 if st.button("❌ Delete", key=f"del_{i}"):
@@ -167,8 +161,7 @@ elif mode == "📦 Template Manager":
             name = st.text_input("Template Name")
             desc = st.text_area("What's Included")
             labor = st.number_input("Labor Hours", min_value=0.0, step=0.1)
-            parts = st.multiselect("Parts Used", options=[p["Part Number"] for p in parts_catalog
-
+            parts = st.multiselect("Parts Used", options=[p["Part Number"] for p in parts_catalog])
             submitted = st.form_submit_button("Save Template")
             if submitted:
                 service_templates.append({
@@ -184,13 +177,10 @@ elif mode == "📦 Template Manager":
 
         st.markdown("### Existing Templates")
         for i, tpl in enumerate(service_templates):
-            with st.expander(tpl["Template Name"
-:
-                st.write(tpl["What's Included"
-
+            with st.expander(tpl["Template Name"]):
+                st.write(tpl["What's Included"])
                 st.write(f"Labor: {tpl['Labor Hours']} hrs")
-                st.write(f"Parts: {', '.join(tpl['Parts Used'
-}")
+                st.write(f"Parts: {', '.join(tpl['Parts Used'])}")
                 if st.button("❌ Delete Template", key=f"tpl_del_{i}"):
                     service_templates.pop(i)
                     save_json(TEMPLATE_FILE, service_templates)
@@ -252,8 +242,7 @@ elif mode == "📦 Template Manager":
             name = st.text_input("Template Name")
             desc = st.text_area("What's Included")
             labor = st.number_input("Labor Hours", min_value=0.0, step=0.1)
-            parts = st.multiselect("Parts Used", options=[p["Part Number"] for p in parts_catalog
-
+            parts = st.multiselect("Parts Used", options=[p["Part Number"] for p in parts_catalog])
             submitted = st.form_submit_button("Save Template")
             if submitted:
                 service_templates.append({
@@ -269,8 +258,7 @@ elif mode == "📦 Template Manager":
 
         st.markdown("### Existing Templates")
         for i, tpl in enumerate(service_templates):
-            with st.expander(tpl["Template Name"
-:
+            with st.expander(tpl["Template Name"]):
                 tpl["Template Name"] = st.text_input(f"Edit Template Name {i}", value=tpl["Template Name"], key=f"tpl_name_{i}")
                 tpl["What's Included"] = st.text_area(f"Edit What's Included {i}", value=tpl["What's Included"], key=f"tpl_desc_{i}")
                 tpl["Labor Hours"] = st.number_input(f"Edit Labor {i}", min_value=0.0, value=tpl["Labor Hours"], step=0.1, key=f"tpl_labor_{i}")
