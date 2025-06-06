@@ -6,6 +6,7 @@ import os
 SERVICE_FILE = "service_models.json"
 PARTS_FILE = "parts_catalog.json"
 CONFIG_FILE = "config.json"
+TEMPLATE_FILE = "service_templates.json"
 
 def load_json(file_path):
     if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
@@ -23,6 +24,7 @@ def save_json(file_path, data):
 service_models = load_json(SERVICE_FILE)
 parts_catalog = load_json(PARTS_FILE)
 config = load_json(CONFIG_FILE) or {}
+service_templates = load_json(TEMPLATE_FILE)
 
 labor_rate = config.get("Labor Rate", 100.0)
 service_pin = config.get("Service Admin PIN", "0000")
@@ -47,28 +49,7 @@ mode = st.sidebar.radio("Choose mode", [
     "PIN Settings 🔑"
 ])
 
-if mode == "View Service Menu":
-    display_names = sorted([model["Display Name"] for model in service_models if model.get("Services")])
-    if not display_names:
-        st.warning("No vehicles with service intervals found.")
-    else:
-        selected_display = st.selectbox("Select Vehicle", display_names)
-        selected_model = next((m for m in service_models if m["Display Name"] == selected_display), None)
-        if selected_model and selected_model.get("Services"):
-            intervals = [svc["Interval"] for svc in selected_model["Services"]]
-            selected_interval = st.selectbox("Select Service Interval", intervals)
-            svc = next((s for s in selected_model["Services"] if s["Interval"] == selected_interval), None)
-            if svc:
-                parts = [get_part_info(p) for p in svc.get("Parts Used", []) if get_part_info(p)]
-                st.markdown(f"### {svc['Interval']}")
-                st.write(svc.get("What's Included", ""))
-                st.markdown("#### Parts Used:")
-                for part in parts:
-                    st.write(f"- **{part['Part Name']}** ({part['Part Number']}): ${part['Unit Price']:.2f}")
-                st.write(f"**Labor:** {svc.get('Labor Hours', 0.0):.2f} hrs")
-                st.markdown(f"### 💰 Total Price: **${calculate_total_price(svc):.2f}**")
-
-elif mode == "Admin Panel 🔐":
+if mode == "Admin Panel 🔐":
     st.subheader("Service Admin Panel")
     pin = st.text_input("Enter Service Admin PIN", type="password")
     if pin == service_pin:
@@ -93,70 +74,103 @@ elif mode == "Admin Panel 🔐":
                     st.success("New vehicle added.")
                     st.rerun()
 
-        if not service_models:
-            st.info("No vehicles available to edit.")
-        else:
-            model_names = sorted([m["Display Name"] for m in service_models])
-            selected_display = st.selectbox("Select Vehicle to Edit", model_names)
-            selected_index = next((i for i, m in enumerate(service_models) if m["Display Name"] == selected_display), None)
+        model_names = sorted([m["Display Name"] for m in service_models])
+        selected_display = st.selectbox("Select Vehicle to Edit", model_names)
+        selected_index = next((i for i, m in enumerate(service_models) if m["Display Name"] == selected_display), None)
 
-            if selected_index is not None:
-                selected_model = service_models[selected_index]
-                new_display_name = st.text_input("Display Name", value=selected_model["Display Name"])
-                new_model_code = st.text_input("Model Code", value=selected_model.get("Model", ""))
+        if selected_index is not None:
+            selected_model = service_models[selected_index]
+            new_display_name = st.text_input("Display Name", value=selected_model["Display Name"])
+            new_model_code = st.text_input("Model Code", value=selected_model.get("Model", ""))
 
-                if st.button("💾 Save Vehicle Info"):
-                    selected_model["Model"] = new_model_code
-                    selected_model["Display Name"] = new_display_name
+            if st.button("💾 Save Vehicle Info"):
+                selected_model["Model"] = new_model_code
+                selected_model["Display Name"] = new_display_name
+                service_models[selected_index] = selected_model
+                save_json(SERVICE_FILE, service_models)
+                st.success("Vehicle info updated.")
+
+            st.markdown("### 🔁 Add Service from Template")
+            template_names = [tpl["Template Name"] for tpl in service_templates]
+            selected_template = st.selectbox("Select Template", template_names)
+            if st.button("➕ Add Selected Template"):
+                tpl = next((t for t in service_templates if t["Template Name"] == selected_template), None)
+                if tpl:
+                    selected_model["Services"].append({
+                        "Interval": tpl["Interval"],
+                        "What's Included": tpl["What's Included"],
+                        "Labor Hours": tpl["Labor Hours"],
+                        "Parts Used": tpl["Parts Used"]
+                    })
                     service_models[selected_index] = selected_model
                     save_json(SERVICE_FILE, service_models)
-                    st.success("Vehicle info updated.")
-
-                st.markdown("### Edit Service Intervals")
-                indices_to_delete = []
-                for i, svc in enumerate(selected_model["Services"]):
-                    with st.expander(f"Edit: {svc['Interval']}"):
-                        svc["Interval"] = st.text_input(f"Interval {i+1}", value=svc["Interval"], key=f"int_{i}")
-                        svc["What's Included"] = st.text_area(f"What's Included {i+1}", value=svc.get("What's Included", ""), key=f"desc_{i}")
-                        svc["Labor Hours"] = st.number_input(f"Labor Hours {i+1}", value=svc.get("Labor Hours", 0.0), step=0.1, key=f"lh_{i}")
-                        current_parts = svc.get("Parts Used", [])
-                        part_options = [p["Part Number"] for p in parts_catalog]
-                        valid_defaults = [p for p in current_parts if p in part_options]
-                        new_parts = st.multiselect(
-                            f"Select Parts {i+1}",
-                            options=part_options,
-                            default=valid_defaults,
-                            key=f"parts_{i}"
-                        )
-                        svc["Parts Used"] = new_parts
-
-                        if st.button(f"❌ Delete This Service", key=f"del_{i}"):
-                            indices_to_delete.append(i)
-
-                if indices_to_delete:
-                    for i in sorted(indices_to_delete, reverse=True):
-                        del selected_model["Services"][i]
-                    service_models[selected_index] = selected_model
-                    save_json(SERVICE_FILE, service_models)
+                    st.success("Template added to vehicle.")
                     st.rerun()
 
-                st.markdown("### Add New Interval")
-                with st.form("add_interval_form"):
-                    new_int = st.text_input("New Interval")
-                    new_desc = st.text_area("New What's Included")
-                    new_labor_hours = st.number_input("New Labor Hours", min_value=0.0, step=0.1)
-                    new_parts = st.multiselect("New Parts Used", options=[p["Part Number"] for p in parts_catalog])
-                    add_submitted = st.form_submit_button("Add Interval")
-                    if add_submitted:
-                        selected_model["Services"].append({
-                            "Interval": new_int,
-                            "What's Included": new_desc,
-                            "Labor Hours": new_labor_hours,
-                            "Parts Used": new_parts
-                        })
-                        service_models[selected_index] = selected_model
-                        save_json(SERVICE_FILE, service_models)
-                        st.success("New interval added.")
-                        st.rerun()
-    else:
-        st.warning("Enter correct Service Admin PIN.")
+            st.markdown("### Edit Service Intervals")
+            indices_to_delete = []
+            for i, svc in enumerate(selected_model["Services"]):
+                with st.expander(f"Edit: {svc['Interval']}"):
+                    svc["Interval"] = st.text_input(f"Interval {i+1}", value=svc["Interval"], key=f"int_{i}")
+                    svc["What's Included"] = st.text_area(f"What's Included {i+1}", value=svc.get("What's Included", ""), key=f"desc_{i}")
+                    svc["Labor Hours"] = st.number_input(f"Labor Hours {i+1}", value=svc.get("Labor Hours", 0.0), step=0.1, key=f"lh_{i}")
+                    current_parts = svc.get("Parts Used", [])
+                    part_options = [p["Part Number"] for p in parts_catalog]
+                    valid_defaults = [p for p in current_parts if p in part_options]
+                    new_parts = st.multiselect(
+                        f"Select Parts {i+1}",
+                        options=part_options,
+                        default=valid_defaults,
+                        key=f"parts_{i}"
+                    )
+                    svc["Parts Used"] = new_parts
+
+                    if st.button(f"❌ Delete This Service", key=f"del_{i}"):
+                        indices_to_delete.append(i)
+
+            if indices_to_delete:
+                for i in sorted(indices_to_delete, reverse=True):
+                    del selected_model["Services"][i]
+                service_models[selected_index] = selected_model
+                save_json(SERVICE_FILE, service_models)
+                st.rerun()
+
+            st.markdown("### ➕ Add New Custom Interval")
+            with st.form("add_interval_form"):
+                new_int = st.text_input("New Interval")
+                new_desc = st.text_area("New What's Included")
+                new_labor_hours = st.number_input("New Labor Hours", min_value=0.0, step=0.1)
+                new_parts = st.multiselect("New Parts Used", options=[p["Part Number"] for p in parts_catalog])
+                add_submitted = st.form_submit_button("Add Interval")
+                if add_submitted:
+                    selected_model["Services"].append({
+                        "Interval": new_int,
+                        "What's Included": new_desc,
+                        "Labor Hours": new_labor_hours,
+                        "Parts Used": new_parts
+                    })
+                    service_models[selected_index] = selected_model
+                    save_json(SERVICE_FILE, service_models)
+                    st.success("New interval added.")
+                    st.rerun()
+
+        st.markdown("### 🧰 Manage Service Templates")
+        with st.form("add_template_form"):
+            tpl_name = st.text_input("Template Name")
+            tpl_interval = st.text_input("Template Interval")
+            tpl_desc = st.text_area("Template What's Included")
+            tpl_labor = st.number_input("Template Labor Hours", min_value=0.0, step=0.1)
+            tpl_parts = st.multiselect("Template Parts Used", options=[p["Part Number"] for p in parts_catalog])
+            tpl_submit = st.form_submit_button("Save Template")
+            if tpl_submit:
+                new_template = {
+                    "Template Name": tpl_name,
+                    "Interval": tpl_interval,
+                    "What's Included": tpl_desc,
+                    "Labor Hours": tpl_labor,
+                    "Parts Used": tpl_parts
+                }
+                service_templates.append(new_template)
+                save_json(TEMPLATE_FILE, service_templates)
+                st.success("Template saved.")
+                st.rerun()

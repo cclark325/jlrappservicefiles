@@ -1,0 +1,111 @@
+[
+    {
+        "Template Name": "Synthetic Oil and Filter Change",
+        "Interval": "Oil Change",
+        "What's Included": "Replace synthetic oil and oil filter. Reset oil life monitor.",
+        "Labor Hours": 1.0,
+        "Parts Used": [
+            "OIL123",
+            "FILTER001"
+        ]
+    },
+    {
+        "Template Name": "Cabin Air Filter",
+        "Interval": "Cabin Filter",
+        "What's Included": "Replace cabin air filter to improve interior air quality.",
+        "Labor Hours": 0.5,
+        "Parts Used": [
+            "CAB001"
+        ]
+    },
+    {
+        "Template Name": "Engine Air Filter",
+        "Interval": "Air Filter",
+        "What's Included": "Replace engine air filter to maintain optimal performance.",
+        "Labor Hours": 0.3,
+        "Parts Used": [
+            "ENGF001"
+        ]
+    },
+    {
+        "Template Name": "Cooling System Service",
+        "Interval": "Coolant",
+        "What's Included": "Drain and refill cooling system. Inspect hoses and radiator.",
+        "Labor Hours": 1.5,
+        "Parts Used": [
+            "COOL001",
+            "COOL002"
+        ]
+    },
+    {
+        "Template Name": "Driveline Service",
+        "Interval": "Driveline",
+        "What's Included": "Inspect and replace driveline fluids as required.",
+        "Labor Hours": 1.2,
+        "Parts Used": [
+            "DRV001"
+        ]
+    },
+    {
+        "Template Name": "Tire Rotation",
+        "Interval": "Tires",
+        "What's Included": "Rotate tires front-to-back and side-to-side.",
+        "Labor Hours": 0.5,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Diesel Fuel Filter",
+        "Interval": "Fuel Filter",
+        "What's Included": "Replace diesel fuel filter.",
+        "Labor Hours": 0.7,
+        "Parts Used": [
+            "DSLFLT"
+        ]
+    },
+    {
+        "Template Name": "Engine Drive Belts",
+        "Interval": "Drive Belts",
+        "What's Included": "Inspect and replace worn engine drive belts.",
+        "Labor Hours": 1.0,
+        "Parts Used": [
+            "BELT123"
+        ]
+    },
+    {
+        "Template Name": "Spark Plugs",
+        "Interval": "Spark Plugs",
+        "What's Included": "Replace spark plugs and inspect ignition system.",
+        "Labor Hours": 1.2,
+        "Parts Used": [
+            "SPARK001"
+        ]
+    },
+    {
+        "Template Name": "Brake Fluid Service",
+        "Interval": "Brake Fluid",
+        "What's Included": "Flush and replace brake fluid.",
+        "Labor Hours": 1.0,
+        "Parts Used": [
+            "BRKFL001"
+        ]
+    },
+    {
+        "Template Name": "Fill DEF Tank",
+        "Interval": "DEF",
+        "What's Included": "Fill Diesel Exhaust Fluid (DEF) tank.",
+        "Labor Hours": 0.3,
+        "Parts Used": [
+            "DEF001"
+        ]
+    },
+    {
+        "Template Name": "Engine Timing Belts",
+        "Interval": "Timing Belts",
+        "What's Included": "Replace front and rear engine timing belts.",
+        "Labor Hours": 3.5,
+        "Parts Used": [
+            "TIMBELT1",
+            "TIMBELT2"
+        ]
+    }
+]
