@@ -128,5 +128,145 @@
         "What's Included": "Remote Key Fob Battery",
         "Labor Hours": 0.0,
         "Parts Used": []
+    },
+    {
+        "Template Name": "Synthetic Oil & Filter Change",
+        "Interval": "Synthetic Oil & Filter Change",
+        "What's Included": "Synthetic Oil & Filter Change",
+        "Labor Hours": 0.5,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Cabin Air Filter Replacement",
+        "Interval": "Cabin Air Filter Replacement",
+        "What's Included": "Cabin Air Filter Replacement",
+        "Labor Hours": 0.3,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Engine Air Filter Replacement",
+        "Interval": "Engine Air Filter Replacement",
+        "What's Included": "Engine Air Filter Replacement",
+        "Labor Hours": 0.3,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Diesel Fuel Filter Replacement",
+        "Interval": "Diesel Fuel Filter Replacement",
+        "What's Included": "Diesel Fuel Filter Replacement",
+        "Labor Hours": 0.6,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Drive Belt Replacement",
+        "Interval": "Drive Belt Replacement",
+        "What's Included": "Drive Belt Replacement",
+        "Labor Hours": 0.5,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Spark Plug Replacement",
+        "Interval": "Spark Plug Replacement",
+        "What's Included": "Spark Plug Replacement",
+        "Labor Hours": 1.0,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Brake Fluid Flush",
+        "Interval": "Brake Fluid Flush",
+        "What's Included": "Brake Fluid Flush",
+        "Labor Hours": 0.6,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Front Engine Timing Belt",
+        "Interval": "Front Engine Timing Belt",
+        "What's Included": "Front Engine Timing Belt",
+        "Labor Hours": 2.0,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Rear Engine Timing Belt",
+        "Interval": "Rear Engine Timing Belt",
+        "What's Included": "Rear Engine Timing Belt",
+        "Labor Hours": 2.5,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Battery Replacement",
+        "Interval": "Battery Replacement",
+        "What's Included": "Battery Replacement",
+        "Labor Hours": 0.4,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Brake Pad Replacement (Front)",
+        "Interval": "Brake Pad Replacement (Front)",
+        "What's Included": "Brake Pad Replacement (Front)",
+        "Labor Hours": 0.7,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Brake Pad Replacement (Rear)",
+        "Interval": "Brake Pad Replacement (Rear)",
+        "What's Included": "Brake Pad Replacement (Rear)",
+        "Labor Hours": 0.7,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Transmission Service",
+        "Interval": "Transmission Service",
+        "What's Included": "Transmission Service",
+        "Labor Hours": 1.2,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Wheel Alignment",
+        "Interval": "Wheel Alignment",
+        "What's Included": "Wheel Alignment",
+        "Labor Hours": 1.0,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Transfer Case Service",
+        "Interval": "Transfer Case Service",
+        "What's Included": "Transfer Case Service",
+        "Labor Hours": 0.7,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Wiper Blade Replacement",
+        "Interval": "Wiper Blade Replacement",
+        "What's Included": "Wiper Blade Replacement",
+        "Labor Hours": 0.1,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Key Fob Battery Replacement",
+        "Interval": "Key Fob Battery Replacement",
+        "What's Included": "Key Fob Battery Replacement",
+        "Labor Hours": 0.0,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Inspection - Full",
+        "Interval": "Inspection - Full",
+        "What's Included": "Inspection - Full",
+        "Labor Hours": 1.0,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Software Update",
+        "Interval": "Software Update",
+        "What's Included": "Software Update",
+        "Labor Hours": 0.5,
+        "Parts Used": []
+    },
+    {
+        "Template Name": "Fuel Injector Cleaning",
+        "Interval": "Fuel Injector Cleaning",
+        "What's Included": "Fuel Injector Cleaning",
+        "Labor Hours": 0.8,
+        "Parts Used": []
     }
 ]
