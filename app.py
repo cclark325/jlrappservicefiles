@@ -122,16 +122,20 @@ elif mode == "🔧 Vehicle Manager":
                 st.success("Service interval added.")
 
         
+        
         st.markdown("### Existing Intervals")
+        intervals_to_delete = []
         for i, svc in enumerate(selected_model.get("Services", [])):
             with st.expander(f"Edit Interval: {svc['Interval']}"):
                 svc["Interval"] = st.text_input(f"Interval Name {i}", value=svc["Interval"], key=f"edit_int_{i}")
                 svc["What's Included"] = st.text_area(f"Included Services {i}", value=svc["What's Included"], key=f"edit_desc_{i}")
                 svc["Labor Hours"] = st.number_input(f"Labor Hours {i}", min_value=0.0, value=svc.get("Labor Hours", 0.0), step=0.1, key=f"edit_labor_{i}")
+                valid_parts = [p["Part Number"] for p in parts_catalog]
+                default_parts = [p for p in svc.get("Parts Used", []) if p in valid_parts]
                 svc["Parts Used"] = st.multiselect(
                     f"Parts Used {i}",
-                    options=[p["Part Number"] for p in parts_catalog],
-                    default=[p for p in svc.get("Parts Used", []) if p in [p["Part Number"] for p in parts_catalog]],
+                    options=valid_parts,
+                    default=default_parts,
                     key=f"edit_parts_{i}"
                 )
                 if st.button(f"💾 Save Interval {i}", key=f"save_int_{i}"):
@@ -139,6 +143,16 @@ elif mode == "🔧 Vehicle Manager":
                     service_models[idx] = selected_model
                     save_json(SERVICE_FILE, service_models)
                     st.success("Interval updated.")
+                if st.button(f"🗑️ Delete Interval {i}", key=f"delete_int_{i}"):
+                    intervals_to_delete.append(i)
+
+        if intervals_to_delete:
+            for index in sorted(intervals_to_delete, reverse=True):
+                selected_model["Services"].pop(index)
+            service_models[idx] = selected_model
+            save_json(SERVICE_FILE, service_models)
+            st.warning("Selected interval(s) deleted.")
+            st.experimental_rerun()
 
         st.markdown("### ➕ Add New Vehicle")
         with st.form("add_vehicle_form"):
