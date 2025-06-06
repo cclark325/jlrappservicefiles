@@ -178,7 +178,11 @@ elif mode == "📦 Template Manager":
             with st.expander(tpl["Template Name"]):
                 tpl["Template Name"] = st.text_input(f"Edit Template Name {i}", value=tpl["Template Name"], key=f"tpl_name_{i}")
                 tpl["Labor Hours"] = st.number_input(f"Edit Labor {i}", min_value=0.0, value=tpl["Labor Hours"], step=0.1, key=f"tpl_labor_{i}")
-                tpl["Parts Used"] = st.multiselect(f"Edit Parts {i}", options=[p["Part Number"] for p in parts_catalog], default=tpl["Parts Used"], key=f"tpl_parts_{i}")
+                
+                valid_parts = [p["Part Number"] for p in parts_catalog]
+                default_parts = [p for p in tpl["Parts Used"] if p in valid_parts]
+                tpl["Parts Used"] = st.multiselect(f"Edit Parts {i}", options=valid_parts, default=default_parts, key=f"tpl_parts_{i}")
+    
                 if st.button(f"💾 Save Changes to Template {i}", key=f"tpl_save_{i}"):
                     service_templates[i] = tpl
                     save_json(TEMPLATE_FILE, service_templates)
@@ -295,7 +299,11 @@ elif mode == "📦 Template Manager":
                 tpl["Template Name"] = st.text_input(f"Edit Template Name {i}", value=tpl["Template Name"], key=f"tpl_name_{i}")
                 tpl["What's Included"] = st.text_area(f"Edit What's Included {i}", value=tpl["What's Included"], key=f"tpl_desc_{i}")
                 tpl["Labor Hours"] = st.number_input(f"Edit Labor {i}", min_value=0.0, value=tpl["Labor Hours"], step=0.1, key=f"tpl_labor_{i}")
-                tpl["Parts Used"] = st.multiselect(f"Edit Parts {i}", options=[p["Part Number"] for p in parts_catalog], default=tpl["Parts Used"], key=f"tpl_parts_{i}")
+                
+                valid_parts = [p["Part Number"] for p in parts_catalog]
+                default_parts = [p for p in tpl["Parts Used"] if p in valid_parts]
+                tpl["Parts Used"] = st.multiselect(f"Edit Parts {i}", options=valid_parts, default=default_parts, key=f"tpl_parts_{i}")
+    
                 if st.button(f"💾 Save Changes to Template {i}", key=f"tpl_save_{i}"):
                     service_templates[i] = tpl
                     save_json(TEMPLATE_FILE, service_templates)
