@@ -39,6 +39,43 @@ service_pin = config.get("Service Admin PIN", "0000")
 parts_pin = config.get("Parts Admin PIN", "0000")
 
 st.set_page_config(page_title="Service Manager", layout="wide")
+
+# Inject custom styles for modern UI
+st.markdown("""
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+}
+div[data-testid="stSidebar"] {
+    background-color: #f3f4f6;
+}
+h1, h2, h3 {
+    color: #111827;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 4px;
+}
+.stButton>button {
+    background-color: #2563eb;
+    color: white;
+    border-radius: 8px;
+    padding: 0.4em 1em;
+    font-weight: 500;
+}
+.stButton>button:hover {
+    background-color: #1d4ed8;
+}
+[data-testid="stExpander"] {
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 8px;
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.05);
+}
+</style>
+""")
+st.sidebar.markdown(
+    f"<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Jaguar_Land_Rover_Logo.svg/2560px-Jaguar_Land_Rover_Logo.svg.png' width='100%' style='margin-bottom: 20px;'>",
+    unsafe_allow_html=True
+)
 st.sidebar.title("🔧 Service System")
 
 mode = st.sidebar.radio("Select Mode", [
